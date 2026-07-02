@@ -1,0 +1,315 @@
+/* ==========================================================================
+   SUPREME CENTRED MONOSPACE STYLE - mil4n.de
+   ========================================================================== */
+
+/* Theme Variables (Default is DARK based on supreme.com landing screen) */
+:root {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --border-color: #ffffff;
+  --hover-color: #ee2d24; /* Supreme Red */
+  --accent-color: #ee2d24;
+  --gray-text: #888888;
+  
+  /* Game Colors (Brutalist style) */
+  --tile-bg-empty: transparent;
+  --tile-border-empty: #333333;
+  --tile-border-active: #888888;
+  --tile-correct: #ee2d24; /* Supreme Red */
+  --tile-present: #b59f3b; /* Present Yellow */
+  --tile-absent: #333333;
+  --key-bg: #222222;
+  
+  --font-family: "Courier New", Courier, monospace;
+}
+
+[data-theme="light"] {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --border-color: #000000;
+  --hover-color: #ee2d24;
+  --gray-text: #666666;
+  
+  --tile-border-empty: #cccccc;
+  --tile-border-active: #888888;
+  --tile-correct: #ee2d24;
+  --tile-present: #c9b458;
+  --tile-absent: #787c7e;
+  --key-bg: #eeeeee;
+}
+
+/* CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, h1, h2, p, ul, button {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.3;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Centred Container Layout */
+#landing-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 22vh 15px 80px 15px; /* Vertical start height 22% of viewport */
+}
+
+#landing-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Header Section */
+#landing-header {
+  margin-bottom: 180px; /* Big vertical gap matching original supreme */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logo {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  font-family: "Futura-BoldItalic", "Futura-Bold", "Futura", "Jost", -apple-system, sans-serif;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 26px;
+  line-height: 1;
+  padding: 6px 14px; /* snug original supreme box padding */
+  letter-spacing: -1.2px;
+  display: inline-block;
+  user-select: none;
+  margin-bottom: 12px;
+  border: none;
+}
+
+#store-clock {
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: bold; /* bold weight like original */
+  color: var(--text-color);
+  opacity: 0.9;
+  letter-spacing: -0.2px;
+}
+
+/* Centred Navigation Menu */
+#landing-menu {
+  width: 100%;
+  margin-bottom: 60px; /* Spacing between menu and icons footer */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#landing-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  text-align: left;
+}
+
+#landing-menu ul li {
+  margin-bottom: 14px; /* spacing between lines */
+  text-align: left;
+}
+
+#landing-menu ul li a {
+  font-size: 13px;
+  font-weight: bold; /* bold weight like original */
+  text-transform: lowercase;
+  letter-spacing: -0.3px;
+  display: inline-block;
+  padding: 2px 0;
+}
+
+#landing-menu ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Panels */
+.panel {
+  display: none;
+  width: 100%;
+  animation: fadeIn 0.2s ease;
+}
+
+.panel.active {
+  display: block;
+}
+
+.game-panel.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.panel-header h2, .game-header h2 {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: lowercase;
+  margin-bottom: 15px;
+  letter-spacing: -0.3px;
+}
+
+.back-link {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: lowercase;
+  color: var(--text-color);
+  opacity: 0.8;
+  display: inline-block;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+  color: var(--hover-color);
+  opacity: 1;
+}
+
+
+
+/* About Text Design */
+.about-content {
+  text-align: left;
+  line-height: 1.6;
+  font-size: 13px;
+  max-width: 380px;
+  margin: 15px auto;
+}
+
+.about-content p {
+  margin-bottom: 12px;
+  text-transform: lowercase;
+}
+
+#secret-chat-history {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+#secret-chat-history::-webkit-scrollbar {
+  width: 4px;
+}
+#secret-chat-history::-webkit-scrollbar-track {
+  background: transparent;
+}
+#secret-chat-history::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  line-height: 1.4;
+  font-family: var(--font-family);
+  font-size: 12px;
+}
+
+.chat-message-time {
+  font-size: 10px;
+  color: var(--gray-text);
+  margin-right: 5px;
+}
+
+.chat-message-header {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+.chat-message-text {
+  color: var(--text-color);
+  word-break: break-word;
+}
+
+/* Footer & Controls */
+
+
+.panel-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+#landing-footer {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+}
+
+.social-icons a {
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: opacity 0.1s ease, color 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.social-icons a:hover {
+  opacity: 1;
+  color: var(--hover-color);
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  #landing-wrapper {
+    max-width: 100%;
+  }
+  
+  #landing-header {
+    margin-bottom: 60px;
+  }
+  
+  .logo {
+    font-size: 25px;
+    padding: 6px 12px;
+  }
+}
