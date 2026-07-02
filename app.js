@@ -134,11 +134,17 @@ async function loadSecretMessages(isInitial = false) {
   
   let messages = [];
   
-  // Versuche zuerst, die Nachrichten vom lokalen API-Server zu laden
+  // Versuche zuerst, die Nachrichten vom API-Server zu laden
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 800);
-    const response = await fetch("http://localhost:5005/api/messages", { signal: controller.signal });
+    
+    let apiUrl = "/api/messages";
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      apiUrl = "http://localhost:5005/api/messages";
+    }
+    
+    const response = await fetch(apiUrl, { signal: controller.signal });
     clearTimeout(timeoutId);
     if (response.ok) {
       messages = await response.json();
