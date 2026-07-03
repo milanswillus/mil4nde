@@ -8,17 +8,5 @@
         "timestamp": "02.07.2026, 17:20:15",
         "name": "Milan",
         "text": "Test"
-    },
-    {
-        "timestamp": "02.07.2026, 18:56:24",
-        "name": "Peter",
-        "text": "Nachricht schreiben",
-        "chat_id": 6445681863
-    },
-    {
-        "timestamp": "02.07.2026, 18:56:29",
-        "name": "Peter",
-        "text": "Hallo",
-        "chat_id": 6445681863
     }
 ]

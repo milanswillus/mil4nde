@@ -313,3 +313,177 @@ a {
     padding: 6px 12px;
   }
 }
+
+/* Yatzy Styles */
+.yatzy-setup-section {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.yatzy-mode-select {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.yatzy-btn {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 5px 15px;
+  font-family: var(--font-family);
+  font-size: 11px;
+  cursor: pointer;
+  text-transform: lowercase;
+  font-weight: bold;
+  transition: background 0.1s, color 0.1s;
+}
+
+.yatzy-btn.active {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+
+.yatzy-btn:hover:not(.active) {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.yatzy-btn-primary {
+  background: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  padding: 8px 20px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: lowercase;
+  margin-top: 10px;
+  transition: opacity 0.1s;
+}
+
+.yatzy-btn-primary:hover {
+  opacity: 0.9;
+}
+
+.yatzy-btn-primary:disabled {
+  background: var(--gray-text);
+  color: var(--bg-color);
+  cursor: not-allowed;
+}
+
+/* Dice styling */
+.yatzy-dice-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  gap: 8px;
+}
+
+.yatzy-die {
+  width: 55px;
+  height: 55px;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  background: var(--bg-color);
+  transition: transform 0.1s, border-color 0.1s, color 0.1s;
+}
+
+.yatzy-die.held {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-4px);
+}
+
+.yatzy-die.rolling {
+  animation: shake 0.2s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-2px, 0px) rotate(1deg); }
+  30% { transform: translate(0px, 1px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 1px) rotate(-1deg); }
+  60% { transform: translate(-2px, 0px) rotate(0deg); }
+  70% { transform: translate(1px, 1px) rotate(1deg); }
+  80% { transform: translate(-1px, -1px) rotate(-1deg); }
+  90% { transform: translate(1px, 1px) rotate(0deg); }
+  100% { transform: translate(0px, -1px) rotate(0deg); }
+}
+
+.yatzy-game-controls {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Scorecard table styling */
+.yatzy-scorecard-container {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.yatzy-scorecard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.yatzy-scorecard-table th, .yatzy-scorecard-table td {
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.yatzy-scorecard-table th {
+  font-weight: bold;
+  text-transform: lowercase;
+}
+
+.yatzy-scorecard-table td.score-cell {
+  text-align: right;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.yatzy-scorecard-table td.score-cell.empty {
+  color: var(--gray-text);
+  font-weight: normal;
+}
+
+.yatzy-scorecard-table td.score-cell.empty:hover {
+  background: rgba(238, 45, 36, 0.1);
+  color: var(--accent-color);
+}
+
+.yatzy-scorecard-table td.score-cell.filled {
+  color: var(--text-color);
+  cursor: default;
+}
+
+.yatzy-scorecard-table td.score-cell.bot-cell {
+  cursor: default;
+}
+
+.yatzy-scorecard-table tr.total-row {
+  font-weight: bold;
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.yatzy-scorecard-table tr.total-row td {
+  border-top: 2px solid var(--border-color);
+}
+
+.yatzy-scorecard-table tr.subtotal-row td {
+  border-bottom: 2px solid var(--border-color);
+  font-style: italic;
+}

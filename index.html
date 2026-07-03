@@ -46,11 +46,73 @@
 
       <!-- Secret Section Panel -->
       <section id="secret-view" class="panel text-panel">
+        <div class="panel-header" style="margin-bottom: 15px;">
+          <h2>secret: <span style="text-decoration: underline;">chat</span> | <a href="#secret-yatzy" id="tab-yatzy" style="opacity: 0.7;">yatzy</a></h2>
+        </div>
         <div class="about-content">
           <div id="secret-chat-history">
             <p style="color: var(--gray-text);">Lade Chatverlauf...</p>
           </div>
         </div>
+        <div class="panel-footer">
+          <a href="#menu" class="back-link">&lt; back</a>
+        </div>
+      </section>
+
+      <!-- Yatzy Section Panel -->
+      <section id="yatzy-view" class="panel text-panel">
+        <div class="panel-header" style="margin-bottom: 15px;">
+          <h2>secret: <a href="#secret" id="tab-chat-y" style="opacity: 0.7;">chat</a> | <span style="text-decoration: underline;">yatzy</span></h2>
+        </div>
+        
+        <div class="about-content" style="max-width: 420px; margin: 10px auto;">
+          <!-- Setup Screen -->
+          <div id="yatzy-setup" class="yatzy-setup-section">
+            <p style="margin-bottom: 15px; text-transform: lowercase;">yatzy gegen dich selbst oder einen perfekten bot.</p>
+            <div class="yatzy-mode-select">
+              <button id="yatzy-mode-solo" class="yatzy-btn active">solo</button>
+              <button id="yatzy-mode-bot" class="yatzy-btn">vs bot</button>
+            </div>
+            <button id="yatzy-start-btn" class="yatzy-btn-primary">spiel starten</button>
+          </div>
+
+          <!-- Active Game Screen -->
+          <div id="yatzy-game-area" style="display: none;">
+            <div id="yatzy-status" style="font-weight: bold; margin-bottom: 15px; text-align: center; text-transform: lowercase; font-size: 11px;">
+              würfel, um das spiel zu beginnen.
+            </div>
+
+            <!-- Dice Container -->
+            <div class="yatzy-dice-container">
+              <div class="yatzy-die" data-index="0">-</div>
+              <div class="yatzy-die" data-index="1">-</div>
+              <div class="yatzy-die" data-index="2">-</div>
+              <div class="yatzy-die" data-index="3">-</div>
+              <div class="yatzy-die" data-index="4">-</div>
+            </div>
+
+            <div class="yatzy-game-controls">
+              <button id="yatzy-roll-btn" class="yatzy-btn-primary">würfeln (3 übrig)</button>
+            </div>
+
+            <!-- Scorecard -->
+            <div class="yatzy-scorecard-container">
+              <table class="yatzy-scorecard-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50%;">kategorie</th>
+                    <th id="col-header-player" style="text-align: right; width: 25%;">du</th>
+                    <th id="col-header-bot" class="bot-col" style="text-align: right; width: 25%; display: none;">bot</th>
+                  </tr>
+                </thead>
+                <tbody id="yatzy-scorecard-body">
+                  <!-- Categories loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <div class="panel-footer">
           <a href="#menu" class="back-link">&lt; back</a>
         </div>
