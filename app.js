@@ -95,7 +95,7 @@ let lastMessageCount = -1;
 function handleRouting() {
   const hash = window.location.hash || "#menu";
   
-  // Stoppe das Polling, wenn wir die Seite verlassen
+  // Stop polling when we leave the page
   if (secretInterval) {
     clearInterval(secretInterval);
     secretInterval = null;
@@ -112,9 +112,9 @@ function handleRouting() {
   } 
   else if (hash === "#secret") {
     document.getElementById("secret-view").classList.add("active");
-    lastMessageCount = -1; // Zurücksetzen für erzwungenes erstes Laden
+    lastMessageCount = -1; // Reset for forced initial load
     loadSecretMessages(true);
-    // Starte Polling alle 3 Sekunden
+    // Start polling every 3 seconds
     secretInterval = setInterval(() => loadSecretMessages(false), 3000);
   }
   else if (hash === "#secret-yatzy") {
@@ -131,14 +131,14 @@ async function loadSecretMessages(isInitial = false) {
   const container = document.getElementById("secret-chat-history");
   if (!container) return;
   
-  // Nur beim ersten Laden oder falls leer den Ladehinweis anzeigen
+  // Only show loading hint on initial load or if empty
   if (isInitial || container.children.length === 0 || container.innerHTML.includes("loading chat history")) {
     container.innerHTML = '<p style="color: var(--gray-text);">loading chat history...</p>';
   }
   
   let messages = [];
   
-  // Versuche zuerst, die Nachrichten vom API-Server zu laden
+  // Try to load messages from the API server first
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 800);
@@ -156,7 +156,7 @@ async function loadSecretMessages(isInitial = false) {
       throw new Error("Local server failed");
     }
   } catch (e) {
-    // Fallback auf statische messages.json
+    // Fallback to static messages.json
     try {
       const response = await fetch("messages.json");
       if (response.ok) {
@@ -171,7 +171,7 @@ async function loadSecretMessages(isInitial = false) {
     }
   }
   
-  // Nur rendern, wenn sich die Anzahl der Nachrichten geändert hat (kein Flackern)
+  // Only render if the number of messages has changed (no flickering)
   if (messages.length === lastMessageCount) {
     return;
   }
@@ -187,7 +187,7 @@ async function loadSecretMessages(isInitial = false) {
     const msgDiv = document.createElement("div");
     msgDiv.className = "chat-message";
     
-    // Zeitstempel
+    // Time stamp
     const timeSpan = document.createElement("span");
     timeSpan.className = "chat-message-time";
     timeSpan.textContent = msg.timestamp ? `[${msg.timestamp}]` : "";
@@ -209,7 +209,7 @@ async function loadSecretMessages(isInitial = false) {
     container.appendChild(msgDiv);
   });
   
-  // Nach unten scrollen
+  // Scroll to bottom
   container.scrollTop = container.scrollHeight;
 }
 
