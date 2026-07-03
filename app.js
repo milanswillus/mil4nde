@@ -132,8 +132,8 @@ async function loadSecretMessages(isInitial = false) {
   if (!container) return;
   
   // Nur beim ersten Laden oder falls leer den Ladehinweis anzeigen
-  if (isInitial || container.children.length === 0 || container.innerHTML.includes("Lade Chatverlauf")) {
-    container.innerHTML = '<p style="color: var(--gray-text);">Lade Chatverlauf...</p>';
+  if (isInitial || container.children.length === 0 || container.innerHTML.includes("loading chat history")) {
+    container.innerHTML = '<p style="color: var(--gray-text);">loading chat history...</p>';
   }
   
   let messages = [];
@@ -162,11 +162,11 @@ async function loadSecretMessages(isInitial = false) {
       if (response.ok) {
         messages = await response.json();
       } else {
-        if (isInitial) container.innerHTML = '<p style="color: var(--hover-color);">Keine Nachrichten gefunden.</p>';
+        if (isInitial) container.innerHTML = '<p style="color: var(--hover-color);">no messages found.</p>';
         return;
       }
     } catch (err) {
-      if (isInitial) container.innerHTML = '<p style="color: var(--hover-color);">Fehler beim Laden der Nachrichten.</p>';
+      if (isInitial) container.innerHTML = '<p style="color: var(--hover-color);">error loading messages.</p>';
       return;
     }
   }
@@ -178,7 +178,7 @@ async function loadSecretMessages(isInitial = false) {
   lastMessageCount = messages.length;
   
   if (messages.length === 0) {
-    container.innerHTML = '<p style="color: var(--gray-text);">Keine Nachrichten vorhanden.</p>';
+    container.innerHTML = '<p style="color: var(--gray-text);">no messages available.</p>';
     return;
   }
   
@@ -218,23 +218,23 @@ async function loadSecretMessages(isInitial = false) {
    ========================================================================== */
 
 const CATEGORIES = [
-  { id: 'ones', name: 'einsen', section: 'upper' },
-  { id: 'twos', name: 'zweien', section: 'upper' },
-  { id: 'threes', name: 'dreien', section: 'upper' },
-  { id: 'fours', name: 'vieren', section: 'upper' },
-  { id: 'fives', name: 'fünfen', section: 'upper' },
-  { id: 'sixes', name: 'sechsen', section: 'upper' },
-  { id: 'upperSubtotal', name: 'zwischensumme', section: 'meta', calc: true },
+  { id: 'ones', name: 'ones', section: 'upper' },
+  { id: 'twos', name: 'twos', section: 'upper' },
+  { id: 'threes', name: 'threes', section: 'upper' },
+  { id: 'fours', name: 'fours', section: 'upper' },
+  { id: 'fives', name: 'fives', section: 'upper' },
+  { id: 'sixes', name: 'sixes', section: 'upper' },
+  { id: 'upperSubtotal', name: 'subtotal', section: 'meta', calc: true },
   { id: 'upperBonus', name: 'bonus (>=63 = 35)', section: 'meta', calc: true },
-  { id: 'threeOfKind', name: 'dreierpasch', section: 'lower' },
-  { id: 'fourOfKind', name: 'viererpasch', section: 'lower' },
+  { id: 'threeOfKind', name: 'three of a kind', section: 'lower' },
+  { id: 'fourOfKind', name: 'four of a kind', section: 'lower' },
   { id: 'fullHouse', name: 'full house (25)', section: 'lower' },
-  { id: 'smallStraight', name: 'kleine straße (30)', section: 'lower' },
-  { id: 'largeStraight', name: 'große straße (40)', section: 'lower' },
-  { id: 'yahtzee', name: 'kniffel (50)', section: 'lower' },
-  { id: 'yahtzeeBonus', name: 'kniffel bonus (+100)', section: 'meta', calc: true },
+  { id: 'smallStraight', name: 'small straight (30)', section: 'lower' },
+  { id: 'largeStraight', name: 'large straight (40)', section: 'lower' },
+  { id: 'yahtzee', name: 'yatzy (50)', section: 'lower' },
+  { id: 'yahtzeeBonus', name: 'yatzy bonus (+100)', section: 'meta', calc: true },
   { id: 'chance', name: 'chance', section: 'lower' },
-  { id: 'totalScore', name: 'gesamtsumme', section: 'meta', calc: true }
+  { id: 'totalScore', name: 'total', section: 'meta', calc: true }
 ];
 
 const CATEGORY_EXPECTED_VALUES = {
@@ -666,7 +666,7 @@ function startYatzyGame() {
     die.classList.remove("held");
   });
   
-  updatePlayerStatus("du bist dran. würfele, um das spiel zu beginnen.");
+  updatePlayerStatus("your turn. roll to start the game.");
   updateYatzyUI();
 }
 
@@ -694,10 +694,10 @@ function playerRollDice() {
   
   if (rolledIndices.length === 0) return;
   
-  updatePlayerStatus("du würfelst...");
+  updatePlayerStatus("rolling...");
   animateYatzyDiceRoll(() => {
     yatzyState.rollsRemaining--;
-    updatePlayerStatus(yatzyState.rollsRemaining === 0 ? "runde beenden: wähle eine kategorie auf der scorecard." : "klicke auf würfel zum halten oder wähle eine kategorie.");
+    updatePlayerStatus(yatzyState.rollsRemaining === 0 ? "end turn: choose a category on the scorecard." : "click on dice to hold or choose a category.");
     updateYatzyUI();
   }, rolledIndices);
 }
@@ -734,10 +734,10 @@ function updateYatzyUI() {
   // Update roll button
   if (yatzyState.activePlayer === 'player') {
     yatzyElements.btnRoll.disabled = yatzyState.rollsRemaining === 0 || yatzyState.isRolling;
-    yatzyElements.btnRoll.textContent = `würfeln (${yatzyState.rollsRemaining} übrig)`;
+    yatzyElements.btnRoll.textContent = `roll (${yatzyState.rollsRemaining} left)`;
   } else {
     yatzyElements.btnRoll.disabled = true;
-    yatzyElements.btnRoll.textContent = "bot spielt...";
+    yatzyElements.btnRoll.textContent = "bot is playing...";
   }
   
   // Update dice elements representation
@@ -863,7 +863,7 @@ function selectCategoryForPlayer(catId, score) {
       yatzyState.held = [false, false, false, false, false];
       yatzyState.round++;
       updateYatzyUI();
-      updatePlayerStatus("du bist dran. würfele, um die runde zu starten.");
+      updatePlayerStatus("your turn. roll to start the round.");
     }
   } else {
     if (isGameOver()) {
@@ -880,7 +880,7 @@ function runBotTurn() {
   yatzyState.held = [false, false, false, false, false];
   updateYatzyUI();
   
-  updateBotStatus("bot würfelt...");
+  updateBotStatus("bot is rolling...");
   setTimeout(() => {
     const rolledIndices = [0, 1, 2, 3, 4];
     animateYatzyDiceRoll(() => {
@@ -890,7 +890,7 @@ function runBotTurn() {
       const remainingBotCategories = getRemainingCategories(yatzyState.scorecards.bot);
       const decision = getBotDecision(yatzyState.dice, 2, remainingBotCategories, yatzyState.scorecards.bot);
       applyBotHold(decision.mask);
-      updateBotStatus("bot überlegt...");
+      updateBotStatus("bot is thinking...");
       updateYatzyUI();
       
       setTimeout(() => {
@@ -902,14 +902,14 @@ function runBotTurn() {
         if (rolledIndices2.length === 0) {
           botSecondRollComplete(remainingBotCategories);
         } else {
-          updateBotStatus("bot würfelt...");
+          updateBotStatus("bot is rolling...");
           animateYatzyDiceRoll(() => {
             yatzyState.rollsRemaining = 1;
             updateYatzyUI();
             
             const decision2 = getBotDecision(yatzyState.dice, 1, remainingBotCategories, yatzyState.scorecards.bot);
             applyBotHold(decision2.mask);
-            updateBotStatus("bot überlegt...");
+            updateBotStatus("bot is thinking...");
             updateYatzyUI();
             
             setTimeout(() => {
@@ -921,7 +921,7 @@ function runBotTurn() {
               if (rolledIndices3.length === 0) {
                 botThirdRollComplete(remainingBotCategories);
               } else {
-                updateBotStatus("bot würfelt...");
+                updateBotStatus("bot is rolling...");
                 animateYatzyDiceRoll(() => {
                   yatzyState.rollsRemaining = 0;
                   updateYatzyUI();
@@ -939,7 +939,7 @@ function runBotTurn() {
 function botSecondRollComplete(remainingBotCategories) {
   const decision2 = getBotDecision(yatzyState.dice, 1, remainingBotCategories, yatzyState.scorecards.bot);
   applyBotHold(decision2.mask);
-  updateBotStatus("bot überlegt...");
+  updateBotStatus("bot is thinking...");
   updateYatzyUI();
   
   setTimeout(() => {
@@ -961,7 +961,7 @@ function botThirdRollComplete(remainingBotCategories) {
   }
   
   yatzyState.scorecards.bot[cat] = score;
-  updateBotStatus(`bot wählt ${getCategoryGermanName(cat)} für ${score} punkte.`);
+  updateBotStatus(`bot chooses ${getCategoryEnglishName(cat)} for ${score} points.`);
   updateYatzyUI();
   
   setTimeout(() => {
@@ -974,7 +974,7 @@ function botThirdRollComplete(remainingBotCategories) {
       yatzyState.held = [false, false, false, false, false];
       yatzyState.round++;
       updateYatzyUI();
-      updatePlayerStatus("du bist dran. würfele, um die runde zu starten.");
+      updatePlayerStatus("your turn. roll to start the round.");
     }
   }, 1500);
 }
@@ -989,7 +989,7 @@ function getRemainingCategories(scorecard) {
   return Object.keys(CATEGORY_EXPECTED_VALUES).filter(cat => scorecard[cat] === null);
 }
 
-function getCategoryGermanName(cat) {
+function getCategoryEnglishName(cat) {
   const category = CATEGORIES.find(c => c.id === cat);
   return category ? category.name : cat;
 }
@@ -1007,16 +1007,16 @@ function isGameOver() {
 
 function endYatzyGame() {
   const pTotal = getTotalScore(yatzyState.scorecards.player);
-  let statusText = `spiel beendet! deine gesamtpunktzahl: ${pTotal}.`;
+  let statusText = `game over! your total score: ${pTotal}.`;
   
   if (yatzyState.mode === 'bot') {
     const bTotal = getTotalScore(yatzyState.scorecards.bot);
     if (pTotal > bTotal) {
-      statusText = `du hast gewonnen! ${pTotal} zu ${bTotal}.`;
+      statusText = `you won! ${pTotal} to ${bTotal}.`;
     } else if (bTotal > pTotal) {
-      statusText = `bot hat gewonnen! ${bTotal} zu ${pTotal}.`;
+      statusText = `bot won! ${bTotal} to ${pTotal}.`;
     } else {
-      statusText = `unentschieden! beide haben ${pTotal} punkte.`;
+      statusText = `it's a tie! both have ${pTotal} points.`;
     }
   }
   
@@ -1029,7 +1029,7 @@ function endYatzyGame() {
     restartBtn = document.createElement("button");
     restartBtn.id = "yatzy-restart-game-btn";
     restartBtn.className = "yatzy-btn-primary";
-    restartBtn.textContent = "nochmal spielen";
+    restartBtn.textContent = "play again";
     restartBtn.addEventListener("click", () => {
       restartBtn.style.display = "none";
       yatzyElements.btnRoll.style.display = "inline-block";
