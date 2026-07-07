@@ -463,10 +463,7 @@ class Component extends DCLogic {
     tiltY: 0,
     pressing: false,
     secretTab: 'chat',
-    messages: [
-      { timestamp: '02.07.2026, 17:18:43', name: 'Milan', text: 'Test hier ist Milan' },
-      { timestamp: '02.07.2026, 17:20:15', name: 'Milan', text: 'Test' }
-    ],
+    messages: [],
     yatzy: {
       mode: 'solo',
       screen: 'setup', // setup | game
@@ -487,12 +484,41 @@ class Component extends DCLogic {
   componentDidMount() {
     this._tick();
     this._clockTimer = setInterval(() => this._tick(), 1000);
+    this._loadMessages();
+    this._msgTimer = setInterval(() => this._loadMessages(), 3000);
   }
   componentWillUnmount() {
     clearInterval(this._clockTimer);
+    clearInterval(this._msgTimer);
     clearInterval(this._rollTimer);
     clearTimeout(this._botTimer);
     clearTimeout(this._pressTimer);
+  }
+
+  async _loadMessages() {
+    let apiUrl = '/api/messages';
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      apiUrl = 'http://localhost:5005/api/messages';
+    }
+
+    let messages = null;
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 800);
+      const res = await fetch(apiUrl, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (res.ok) messages = await res.json();
+    } catch (e) { /* fall through */ }
+
+    if (messages === null) {
+      try {
+        const res = await fetch('messages.json');
+        if (res.ok) messages = await res.json();
+      } catch (e) { /* ignore */ }
+    }
+
+    if (messages !== null) this.setState({ messages });
   }
 
   _tick() {
