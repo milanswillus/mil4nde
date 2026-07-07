@@ -1,145 +1,817 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>mil4n.de</title>
-  <meta name="description" content="Personal website of Milan (mil4n.de) - inspired by the Supreme landing page.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.6">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
-  
-  <div id="landing-container">
-    
-    <!-- Central Wrapper -->
-    <div id="landing-wrapper">
-      
-      <!-- Header Column -->
-      <header id="landing-header">
-        <div class="logo">Mil4n.de</div>
-        <div id="store-clock">07/02/2026 03:57:14 PM BERLIN</div>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <style>
+    @keyframes floatLogo { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes logoPress {
+      0% { transform: scale(1) rotateY(0deg) rotateX(0deg); }
+      28% { transform: scale(0.82) rotateY(-30deg) rotateX(14deg); }
+      58% { transform: scale(1.18) rotateY(22deg) rotateX(-10deg); }
+      80% { transform: scale(0.96) rotateY(-8deg) rotateX(4deg); }
+      100% { transform: scale(1) rotateY(0deg) rotateX(0deg); }
+    }
+    @keyframes glowPulse { 0%,100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.15); } }
+    @keyframes navIn { from { opacity: 0; transform: translateY(14px) rotateX(-40deg); } to { opacity: 1; transform: translateY(0) rotateX(0deg); } }
+    @keyframes panelFlipIn { from { opacity: 0; transform: rotateX(-18deg) translateY(24px) scale(0.96); } to { opacity: 1; transform: rotateX(0deg) translateY(0) scale(1); } }
+    @keyframes diceSpin { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(360deg) rotateY(300deg); } }
+    @keyframes diceSettle { 0% { transform: scale(1.25) rotateY(20deg); } 60% { transform: scale(0.92) rotateY(-6deg); } 100% { transform: scale(1) rotateY(0deg); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes clockBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    body { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: #ee2d24; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #333; }
+  </style>
+</helmet>
+
+<div style="position:relative; min-height:100vh; background:{{ colors.bg }}; color:{{ colors.text }}; font-family:'Courier Prime', 'Courier New', monospace; overflow:hidden; transition:background 0.3s ease, color 0.3s ease;">
+
+  <div style="position:relative; z-index:1; display:flex; justify-content:center; perspective:1400px; padding:14vh 15px 70px 15px; box-sizing:border-box;">
+    <div style="width:100%; max-width:440px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+
+      <!-- HEADER / LOGO -->
+      <header style="margin-bottom:110px; display:flex; flex-direction:column; align-items:center;">
+        <div
+          onMouseMove="{{ handleLogoMove }}"
+          onMouseLeave="{{ resetTilt }}"
+          onClick="{{ triggerPress }}"
+          style="background:{{ colors.accent }}; color:#fff; font-family:'Archivo Black', 'Arial Black', sans-serif; font-weight:900; font-style:italic; font-size:30px; line-height:1; padding:10px 20px; letter-spacing:-1px; display:inline-block; user-select:none; margin-bottom:14px; cursor:pointer; animation:{{ logoAnimation }}; transform-style:preserve-3d; perspective:600px; transform:{{ logoTransform }}; transition:transform 0.15s ease-out;">
+          milxn
+        </div>
+        <div style="font-size:11px; font-weight:700; opacity:0.85; letter-spacing:-0.2px;">{{ clock }}</div>
       </header>
 
-      <!-- Main Navigation Menu -->
-      <nav id="landing-menu" class="panel active">
-        <ul>
-          <li><a href="https://www.linkedin.com/in/milan-swillus-334813371" target="_blank" rel="noopener noreferrer">linkedin</a></li>
-          <li><a href="https://github.com/milanswillus" target="_blank" rel="noopener noreferrer">github</a></li>
-          <li><a href="#about">about</a></li>
-          <li><a href="#secret">secret</a></li>
-          <li><a href="#" id="theme-toggle">theme: dark</a></li>
-        </ul>
-      </nav>
+      <!-- MENU -->
+      <sc-if value="{{ isMenu }}" hint-placeholder-val="{{ true }}">
+        <nav key="{{ viewKey }}" style="width:100%; margin-bottom:70px; animation:panelFlipIn 0.5s cubic-bezier(.2,.8,.2,1) both; transform-style:preserve-3d;">
+          <ul style="list-style:none; padding:0; margin:0 auto; width:150px; text-align:left;">
+            <li style="margin-bottom:16px;">
+              <a href="https://www.linkedin.com/in/milan-swillus-334813371" target="_blank" rel="noopener noreferrer" style="font-size:14px; font-weight:400; text-transform:lowercase; letter-spacing:-0.2px; display:inline-block; position:relative;">linkedin</a>
+            </li>
+            <li style="margin-bottom:16px;">
+              <a href="https://github.com/milanswillus" target="_blank" rel="noopener noreferrer" style="font-size:14px; font-weight:400; text-transform:lowercase; letter-spacing:-0.2px; display:inline-block;">github</a>
+            </li>
+            <li style="margin-bottom:16px;">
+              <a href="#about" onClick="{{ goAbout }}" style="font-size:14px; font-weight:400; text-transform:lowercase; letter-spacing:-0.2px; display:inline-block;">about</a>
+            </li>
+            <li style="margin-bottom:16px;">
+              <a href="#secret" onClick="{{ goSecret }}" style="font-size:14px; font-weight:400; text-transform:lowercase; letter-spacing:-0.2px; display:inline-block;">secret</a>
+            </li>
+            <li style="margin-bottom:0;">
+              <a href="#" onClick="{{ toggleTheme }}" style="font-size:14px; font-weight:400; text-transform:lowercase; letter-spacing:-0.2px; display:inline-block;">theme: {{ themeLabel }}</a>
+            </li>
+          </ul>
+        </nav>
+      </sc-if>
 
-      <!-- About Section Panel -->
-      <section id="about-view" class="panel text-panel">
-        <div class="about-content">
-          <p>I am Milan.</p>
-        </div>
-        <div class="panel-footer">
-          <a href="#menu" class="back-link">&lt; back</a>
-        </div>
-      </section>
-
-      <!-- Secret Section Panel -->
-      <section id="secret-view" class="panel text-panel">
-        <div class="panel-header" style="margin-bottom: 15px;">
-          <h2>secret: <span style="text-decoration: underline;">chat</span> | <a href="#secret-yatzy" id="tab-yatzy" style="opacity: 0.7;">yatzy</a></h2>
-        </div>
-        <div class="about-content">
-          <div id="secret-chat-history">
-            <p style="color: var(--gray-text);">loading chat history...</p>
+      <!-- ABOUT -->
+      <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+        <section key="{{ viewKey }}" style="width:100%; margin-bottom:70px; animation:panelFlipIn 0.5s cubic-bezier(.2,.8,.2,1) both; transform-style:preserve-3d;">
+          <div style="text-align:left; line-height:1.7; font-size:14px; max-width:380px; margin:0 auto 20px auto;">
+            <p style="margin:0 0 12px 0; text-transform:lowercase;">student @hpi</p>
           </div>
-        </div>
-        <div class="panel-footer">
-          <a href="#menu" class="back-link">&lt; back</a>
-        </div>
-      </section>
+          <a href="#menu" onClick="{{ goMenu }}" style="font-size:12px; font-weight:700; text-transform:lowercase; opacity:0.8; display:inline-block;">&lt; back</a>
+        </section>
+      </sc-if>
 
-      <!-- Yatzy Section Panel -->
-      <section id="yatzy-view" class="panel text-panel">
-        <div class="panel-header" style="margin-bottom: 15px;">
-          <h2>secret: <a href="#secret" id="tab-chat-y" style="opacity: 0.7;">chat</a> | <span style="text-decoration: underline;">yatzy</span></h2>
-        </div>
-        
-        <div class="about-content" style="max-width: 420px; margin: 10px auto;">
-          <!-- Setup Screen -->
-          <div id="yatzy-setup" class="yatzy-setup-section">
-            <p style="margin-bottom: 15px; text-transform: lowercase;">yatzy against yourself or a perfect bot.</p>
-            <div class="yatzy-mode-select">
-              <button id="yatzy-mode-solo" class="yatzy-btn active">solo</button>
-              <button id="yatzy-mode-bot" class="yatzy-btn">vs bot</button>
-            </div>
-            <button id="yatzy-start-btn" class="yatzy-btn-primary">start game</button>
+      <!-- SECRET -->
+      <sc-if value="{{ isSecret }}" hint-placeholder-val="{{ false }}">
+        <section key="{{ viewKey }}" style="width:100%; margin-bottom:70px; animation:panelFlipIn 0.5s cubic-bezier(.2,.8,.2,1) both; transform-style:preserve-3d;">
+          <div style="margin-bottom:16px; font-size:14px; font-weight:700; text-transform:lowercase;">
+            secret:
+            <span style="text-decoration:{{ chatUnderline }}; margin-left:4px; cursor:pointer;" onClick="{{ goChat }}">chat</span>
+            <span style="opacity:0.5;"> | </span>
+            <span style="text-decoration:{{ yatzyUnderline }}; cursor:pointer;" onClick="{{ goYatzy }}">yatzy</span>
           </div>
 
-          <!-- Active Game Screen -->
-          <div id="yatzy-game-area" style="display: none;">
-            <div id="yatzy-status" style="font-weight: bold; margin-bottom: 15px; text-align: center; text-transform: lowercase; font-size: 11px;">
-              roll the dice to start the game.
+          <sc-if value="{{ isChatTab }}" hint-placeholder-val="{{ true }}">
+            <div style="max-width:420px; margin:0 auto;">
+              <div style="max-height:250px; overflow-y:auto; margin-bottom:15px; text-align:left;">
+                <sc-for list="{{ messages }}" as="msg" hint-placeholder-count="2">
+                  <div style="margin-bottom:8px; line-height:1.4; font-size:12px; animation:fadeUp 0.3s ease both;">
+                    <span style="font-size:10px; color:#888; margin-right:5px;">[{{ msg.timestamp }}]</span>
+                    <span style="font-weight:700; color:{{ colors.accent }};"> {{ msg.name }}: </span>
+                    <span style="word-break:break-word;">{{ msg.text }}</span>
+                  </div>
+                </sc-for>
+              </div>
             </div>
+          </sc-if>
 
-            <!-- Dice Container -->
-            <div class="yatzy-dice-container">
-              <div class="yatzy-die" data-index="0">-</div>
-              <div class="yatzy-die" data-index="1">-</div>
-              <div class="yatzy-die" data-index="2">-</div>
-              <div class="yatzy-die" data-index="3">-</div>
-              <div class="yatzy-die" data-index="4">-</div>
-            </div>
+          <sc-if value="{{ isYatzyTab }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:420px; margin:0 auto;">
 
-            <div class="yatzy-game-controls">
-              <button id="yatzy-roll-btn" class="yatzy-btn-primary">roll (3 left)</button>
-            </div>
+              <sc-if value="{{ yatzyShowSetup }}" hint-placeholder-val="{{ true }}">
+                <div style="text-align:center; margin:20px 0;">
+                  <p style="margin-bottom:15px; text-transform:lowercase; font-size:13px;">yatzy against yourself or a perfect bot.</p>
+                  <div style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;">
+                    <button onClick="{{ setModeSolo }}" style="background:{{ soloBg }}; color:{{ soloColor }}; border:1px solid {{ colors.text }}; padding:6px 16px; font-family:inherit; font-size:11px; cursor:pointer; text-transform:lowercase; font-weight:700; transition:transform 0.15s ease;">solo</button>
+                    <button onClick="{{ setModeBot }}" style="background:{{ botBg }}; color:{{ botColor }}; border:1px solid {{ colors.text }}; padding:6px 16px; font-family:inherit; font-size:11px; cursor:pointer; text-transform:lowercase; font-weight:700; transition:transform 0.15s ease;">vs bot</button>
+                  </div>
+                  <button onClick="{{ startGame }}" style="background:{{ colors.accent }}; color:#fff; border:none; padding:10px 24px; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; text-transform:lowercase; box-shadow:0 10px 24px -10px rgba(238,45,36,0.7); transition:transform 0.15s ease;">start game</button>
+                </div>
+              </sc-if>
 
-            <!-- Scorecard -->
-            <div class="yatzy-scorecard-container">
-              <table class="yatzy-scorecard-table">
-                <thead>
-                  <tr>
-                    <th style="width: 50%;">category</th>
-                    <th id="col-header-player" style="text-align: right; width: 25%;">you</th>
-                    <th id="col-header-bot" class="bot-col" style="text-align: right; width: 25%; display: none;">bot</th>
-                  </tr>
-                </thead>
-                <tbody id="yatzy-scorecard-body">
-                  <!-- Categories loaded dynamically -->
-                </tbody>
-              </table>
+              <sc-if value="{{ yatzyShowGame }}" hint-placeholder-val="{{ false }}">
+                <div>
+                  <div style="font-weight:700; margin-bottom:16px; text-align:center; text-transform:lowercase; font-size:12px; color:{{ statusColor }};">{{ yatzyStatus }}</div>
+
+                  <div style="display:flex; justify-content:space-between; gap:8px; margin:20px 0; perspective:600px;">
+                    <sc-for list="{{ diceList }}" as="die" hint-placeholder-count="5">
+                      <div onClick="{{ die.onClick }}" style="width:58px; height:58px; border:2px solid {{ die.borderColor }}; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; cursor:pointer; user-select:none; background:{{ colors.bg }}; color:{{ die.color }}; transform:{{ die.transform }}; animation:{{ die.animation }}; transition:transform 0.2s ease, border-color 0.15s ease, color 0.15s ease;">
+                        {{ die.value }}
+                      </div>
+                    </sc-for>
+                  </div>
+
+                  <div style="text-align:center; margin-bottom:20px;">
+                    <button onClick="{{ rollDice }}" disabled="{{ rollDisabled }}" style="background:{{ colors.accent }}; color:#fff; border:none; padding:10px 24px; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; text-transform:lowercase; opacity:{{ rollOpacity }}; box-shadow:0 10px 24px -10px rgba(238,45,36,0.7);">{{ rollLabel }}</button>
+                  </div>
+
+                  <div style="margin-top:20px; width:100%;">
+                    <table style="width:100%; border-collapse:collapse; font-size:11px;">
+                      <thead>
+                        <tr>
+                          <th style="width:50%; border:1px solid {{ colors.text }}; padding:6px 10px; text-align:left; text-transform:lowercase;">category</th>
+                          <th style="text-align:right; width:25%; border:1px solid {{ colors.text }}; padding:6px 10px; text-transform:lowercase;">you</th>
+                          <sc-if value="{{ isBotMode }}" hint-placeholder-val="{{ false }}">
+                            <th style="text-align:right; width:25%; border:1px solid {{ colors.text }}; padding:6px 10px; text-transform:lowercase;">bot</th>
+                          </sc-if>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <sc-for list="{{ scoreRows }}" as="row" hint-placeholder-count="8">
+                          <tr style="background:{{ row.rowBg }};">
+                            <td style="border:1px solid {{ colors.text }}; padding:6px 10px; text-align:left; font-weight:{{ row.nameWeight }}; font-style:{{ row.nameStyle }}; border-top:{{ row.borderTop }}; border-bottom:{{ row.borderBottom }};">{{ row.name }}</td>
+                            <td onClick="{{ row.onClickPlayer }}" style="border:1px solid {{ colors.text }}; padding:6px 10px; text-align:right; font-weight:700; cursor:{{ row.playerCursor }}; color:{{ row.playerColor }}; border-top:{{ row.borderTop }}; border-bottom:{{ row.borderBottom }};">{{ row.playerScore }}</td>
+                            <sc-if value="{{ isBotMode }}" hint-placeholder-val="{{ false }}">
+                              <td style="border:1px solid {{ colors.text }}; padding:6px 10px; text-align:right; font-weight:700; border-top:{{ row.borderTop }}; border-bottom:{{ row.borderBottom }};">{{ row.botScore }}</td>
+                            </sc-if>
+                          </tr>
+                        </sc-for>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </sc-if>
+
             </div>
+          </sc-if>
+
+          <div style="margin-top:20px;">
+            <a href="#menu" onClick="{{ goMenu }}" style="font-size:12px; font-weight:700; text-transform:lowercase; opacity:0.8; display:inline-block;">&lt; back</a>
           </div>
-        </div>
+        </section>
+      </sc-if>
 
-        <div class="panel-footer">
-          <a href="#menu" class="back-link">&lt; back</a>
-        </div>
-      </section>
-
-
-      <footer id="landing-footer">
-        <div class="social-icons">
-          <!-- Instagram Icon -->
-          <a href="https://www.instagram.com/milan.cpp/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" class="icon"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="currentColor"/></svg>
+      <!-- FOOTER SOCIALS -->
+      <footer style="width:100%; margin-top:10px;">
+        <div style="display:flex; justify-content:center; gap:18px; align-items:center;">
+          <a href="https://www.instagram.com/milan.cpp/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="opacity:0.7; display:inline-flex; transition:transform 0.2s ease, opacity 0.15s ease;" style-hover="opacity:1; transform:translateY(-3px) rotateX(10deg); color:#ee2d24;">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="currentColor"/></svg>
           </a>
-          <!-- YouTube Icon -->
-          <a href="https://www.youtube.com/watch?v=7wIwJvyZPv0" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-            <svg viewBox="0 0 24 24" class="icon"><path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 00-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 002.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.002 3.002 0 002.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="currentColor"/></svg>
+          <a href="https://www.youtube.com/watch?v=7wIwJvyZPv0" target="_blank" rel="noopener noreferrer" aria-label="YouTube" style="opacity:0.7; display:inline-flex; transition:transform 0.2s ease, opacity 0.15s ease;" style-hover="opacity:1; transform:translateY(-3px) rotateX(10deg); color:#ee2d24;">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 00-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 002.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.002 3.002 0 002.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="currentColor"/></svg>
           </a>
-          <!-- Spotify Icon -->
-          <a href="https://open.spotify.com/user/1pt15okj1966bit3dlucdos3p?si=0451e1d755544cd2" target="_blank" rel="noopener noreferrer" aria-label="Spotify">
-            <svg viewBox="0 0 24 24" class="icon"><path d="M12.008 0C5.375 0 0 5.375 0 12.008c0 6.633 5.375 12.008 12.008 12.008 6.633 0 12.008-5.375 12.008-12.008C24.016 5.375 18.64 0 12.008 0zm5.498 17.322c-.223.367-.706.487-1.073.264-2.985-1.823-6.739-2.235-11.164-1.227-.417.095-.834-.17-.929-.587-.095-.417.17-.834.587-.929 4.846-1.107 8.99-.636 12.316 1.393.367.223.488.706.263 1.086zm1.467-3.262c-.28.455-.878.604-1.333.324-3.414-2.1-8.62-2.712-12.656-1.488-.51.155-1.045-.136-1.2-.646-.155-.51.136-1.046.646-1.2 4.61-1.397 10.354-.716 14.22 1.664.454.28.604.878.323 1.346zm.127-3.398C15.176 8.358 8.7 8.144 4.965 9.277c-.573.173-1.18-.106-1.353-.68-.173-.573.106-1.18.68-1.353 4.29-1.302 11.44-1.056 16.096 1.707.515.306.682.975.377 1.49-.306.514-.975.683-1.49.377z" fill="currentColor"/></svg>
+          <a href="https://open.spotify.com/user/1pt15okj1966bit3dlucdos3p?si=0451e1d755544cd2" target="_blank" rel="noopener noreferrer" aria-label="Spotify" style="opacity:0.7; display:inline-flex; transition:transform 0.2s ease, opacity 0.15s ease;" style-hover="opacity:1; transform:translateY(-3px) rotateX(10deg); color:#ee2d24;">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12.008 0C5.375 0 0 5.375 0 12.008c0 6.633 5.375 12.008 12.008 12.008 6.633 0 12.008-5.375 12.008-12.008C24.016 5.375 18.64 0 12.008 0zm5.498 17.322c-.223.367-.706.487-1.073.264-2.985-1.823-6.739-2.235-11.164-1.227-.417.095-.834-.17-.929-.587-.095-.417.17-.834.587-.929 4.846-1.107 8.99-.636 12.316 1.393.367.223.488.706.263 1.086zm1.467-3.262c-.28.455-.878.604-1.333.324-3.414-2.1-8.62-2.712-12.656-1.488-.51.155-1.045-.136-1.2-.646-.155-.51.136-1.046.646-1.2 4.61-1.397 10.354-.716 14.22 1.664.454.28.604.878.323 1.346zm.127-3.398C15.176 8.358 8.7 8.144 4.965 9.277c-.573.173-1.18-.106-1.353-.68-.173-.573.106-1.18.68-1.353 4.29-1.302 11.44-1.056 16.096 1.707.515.306.682.975.377 1.49-.306.514-.975.683-1.49.377z" fill="currentColor"/></svg>
           </a>
         </div>
       </footer>
 
     </div>
-
   </div>
+</div>
 
-  <script src="app.js"></script>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+/* ---- pure yatzy solver helpers ---- */
+const CATEGORIES = [
+  { id: 'ones', name: 'ones', section: 'upper' },
+  { id: 'twos', name: 'twos', section: 'upper' },
+  { id: 'threes', name: 'threes', section: 'upper' },
+  { id: 'fours', name: 'fours', section: 'upper' },
+  { id: 'fives', name: 'fives', section: 'upper' },
+  { id: 'sixes', name: 'sixes', section: 'upper' },
+  { id: 'upperSubtotal', name: 'subtotal', section: 'meta', calc: true },
+  { id: 'upperBonus', name: 'bonus (>=63 = 35)', section: 'meta', calc: true },
+  { id: 'threeOfKind', name: 'three of a kind', section: 'lower' },
+  { id: 'fourOfKind', name: 'four of a kind', section: 'lower' },
+  { id: 'fullHouse', name: 'full house (25)', section: 'lower' },
+  { id: 'smallStraight', name: 'small straight (30)', section: 'lower' },
+  { id: 'largeStraight', name: 'large straight (40)', section: 'lower' },
+  { id: 'yahtzee', name: 'yatzy (50)', section: 'lower' },
+  { id: 'yahtzeeBonus', name: 'yatzy bonus (+100)', section: 'meta', calc: true },
+  { id: 'chance', name: 'chance', section: 'lower' },
+  { id: 'totalScore', name: 'total', section: 'meta', calc: true }
+];
+
+const CATEGORY_EXPECTED_VALUES = {
+  ones: 2.0, twos: 5.2, threes: 8.5, fours: 12.0, fives: 15.5, sixes: 19.0,
+  threeOfKind: 15.0, fourOfKind: 7.0, fullHouse: 22.0, smallStraight: 23.0,
+  largeStraight: 12.0, yahtzee: 17.0, chance: 22.0
+};
+
+const factMemo = [1, 1, 2, 6, 24, 120, 720];
+function factorial(n) { return factMemo[n] || 1; }
+
+function getPermutationsCount(roll) {
+  const counts = Array(7).fill(0);
+  for (const val of roll) counts[val]++;
+  let num = factorial(roll.length);
+  let den = 1;
+  for (let i = 1; i <= 6; i++) den *= factorial(counts[i]);
+  return num / den;
+}
+
+function getUniqueRolls(m) {
+  const results = [];
+  function helper(currentRoll, startFace) {
+    if (currentRoll.length === m) { results.push([...currentRoll]); return; }
+    for (let face = startFace; face <= 6; face++) {
+      currentRoll.push(face);
+      helper(currentRoll, face);
+      currentRoll.pop();
+    }
+  }
+  helper([], 1);
+  return results;
+}
+
+function isUpperCategory(cat) {
+  return ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'].includes(cat);
+}
+
+function getScore(roll, category) {
+  const counts = Array(7).fill(0);
+  let sum = 0;
+  for (const val of roll) { counts[val]++; sum += val; }
+  switch (category) {
+    case 'ones': return counts[1] * 1;
+    case 'twos': return counts[2] * 2;
+    case 'threes': return counts[3] * 3;
+    case 'fours': return counts[4] * 4;
+    case 'fives': return counts[5] * 5;
+    case 'sixes': return counts[6] * 6;
+    case 'threeOfKind': return counts.some(c => c >= 3) ? sum : 0;
+    case 'fourOfKind': return counts.some(c => c >= 4) ? sum : 0;
+    case 'fullHouse': {
+      const hasThree = counts.includes(3);
+      const hasTwo = counts.includes(2);
+      const hasFive = counts.includes(5);
+      return (hasThree && hasTwo) || hasFive ? 25 : 0;
+    }
+    case 'smallStraight': {
+      const hasSeq = (arr) => arr.every(val => counts[val] >= 1);
+      if (hasSeq([1,2,3,4]) || hasSeq([2,3,4,5]) || hasSeq([3,4,5,6])) return 30;
+      return 0;
+    }
+    case 'largeStraight': {
+      const hasSeqL = (arr) => arr.every(val => counts[val] >= 1);
+      if (hasSeqL([1,2,3,4,5]) || hasSeqL([2,3,4,5,6])) return 40;
+      return 0;
+    }
+    case 'yahtzee': return counts.includes(5) ? 50 : 0;
+    case 'chance': return sum;
+    default: return 0;
+  }
+}
+
+function getPotentialScore(roll, category, scorecard) {
+  let score = getScore(roll, category);
+  const counts = Array(7).fill(0);
+  for (const val of roll) counts[val]++;
+  const isYahtzee = counts.includes(5);
+  const yahtzeeSlotFilled = scorecard['yahtzee'] !== null;
+  const yahtzeeSlotIs50 = scorecard['yahtzee'] === 50;
+  if (isYahtzee && yahtzeeSlotFilled && yahtzeeSlotIs50) {
+    if (category === 'fullHouse') score = 25;
+    else if (category === 'smallStraight') score = 30;
+    else if (category === 'largeStraight') score = 40;
+  }
+  return score;
+}
+
+function getUpperSum(scorecard) {
+  let sum = 0;
+  for (const cat of ['ones','twos','threes','fours','fives','sixes']) {
+    if (scorecard[cat] !== null) sum += scorecard[cat];
+  }
+  return sum;
+}
+function getUpperBonus(scorecard) { return getUpperSum(scorecard) >= 63 ? 35 : 0; }
+
+function getTotalScore(scorecard) {
+  let total = getUpperSum(scorecard) + getUpperBonus(scorecard);
+  for (const cat of ['threeOfKind','fourOfKind','fullHouse','smallStraight','largeStraight','yahtzee','chance']) {
+    if (scorecard[cat] !== null) total += scorecard[cat];
+  }
+  total += scorecard.yahtzeeBonus || 0;
+  return total;
+}
+
+function getUtility(roll, cat, scorecard, upperScore) {
+  const score = getPotentialScore(roll, cat, scorecard);
+  const counts = Array(7).fill(0);
+  for (const val of roll) counts[val]++;
+  const isYahtzee = counts.includes(5);
+  let bonusAdded = 0;
+  if (isYahtzee && scorecard['yahtzee'] === 50) bonusAdded = 100;
+  let adjScore = score + bonusAdded;
+  if (isUpperCategory(cat) && upperScore < 63) adjScore += score * 0.55;
+  return adjScore - CATEGORY_EXPECTED_VALUES[cat];
+}
+
+function getMaxCategoryUtility(roll, remainingCategories, scorecard, upperScore) {
+  let maxUtil = -Infinity;
+  for (const cat of remainingCategories) {
+    const u = getUtility(roll, cat, scorecard, upperScore);
+    if (u > maxUtil) maxUtil = u;
+  }
+  return maxUtil;
+}
+
+function calculateMaskEV_1(roll, mask, remainingCategories, scorecard, upperScore, rollUtilities) {
+  const heldIndices = [], rolledIndices = [];
+  for (let i = 0; i < 5; i++) { if ((mask & (1 << i)) !== 0) heldIndices.push(i); else rolledIndices.push(i); }
+  const m = rolledIndices.length;
+  if (m === 0) {
+    const key = [...roll].sort((a,b)=>a-b).join(',');
+    return rollUtilities.get(key) || 0;
+  }
+  const uniqueRolls = getUniqueRolls(m);
+  let totalEV = 0, totalPerm = 0;
+  for (const rolledVals of uniqueRolls) {
+    const finalRoll = [...roll];
+    for (let i = 0; i < m; i++) finalRoll[rolledIndices[i]] = rolledVals[i];
+    const key = finalRoll.sort((a,b)=>a-b).join(',');
+    const permCount = getPermutationsCount(rolledVals);
+    totalEV += (rollUtilities.get(key) || 0) * permCount;
+    totalPerm += permCount;
+  }
+  return totalEV / totalPerm;
+}
+
+function precomputeEV1Table(remainingCategories, scorecard, upperScore) {
+  const allRolls5 = getUniqueRolls(5);
+  const table = new Map();
+  const rollUtilities = new Map();
+  for (const roll of allRolls5) {
+    rollUtilities.set(roll.join(','), getMaxCategoryUtility(roll, remainingCategories, scorecard, upperScore));
+  }
+  for (const roll of allRolls5) {
+    let maxEV = -Infinity;
+    for (let mask = 0; mask < 32; mask++) {
+      const ev = calculateMaskEV_1(roll, mask, remainingCategories, scorecard, upperScore, rollUtilities);
+      if (ev > maxEV) maxEV = ev;
+    }
+    table.set(roll.join(','), maxEV);
+  }
+  return table;
+}
+
+function calculateMaskEV_2(roll, mask, ev1Table) {
+  const heldIndices = [], rolledIndices = [];
+  for (let i = 0; i < 5; i++) { if ((mask & (1 << i)) !== 0) heldIndices.push(i); else rolledIndices.push(i); }
+  const m = rolledIndices.length;
+  if (m === 0) return ev1Table.get([...roll].sort((a,b)=>a-b).join(',')) || 0;
+  const uniqueRolls = getUniqueRolls(m);
+  let totalEV = 0, totalPerm = 0;
+  for (const rolledVals of uniqueRolls) {
+    const finalRoll = [...roll];
+    for (let i = 0; i < m; i++) finalRoll[rolledIndices[i]] = rolledVals[i];
+    const key = finalRoll.sort((a,b)=>a-b).join(',');
+    const permCount = getPermutationsCount(rolledVals);
+    totalEV += (ev1Table.get(key) || 0) * permCount;
+    totalPerm += permCount;
+  }
+  return totalEV / totalPerm;
+}
+
+function getBotDecision(roll, rollsRemaining, remainingCategories, scorecard) {
+  const upperScore = getUpperSum(scorecard);
+  if (rollsRemaining === 0) {
+    let bestCategory = null, bestScore = -Infinity;
+    for (const cat of remainingCategories) {
+      const u = getUtility(roll, cat, scorecard, upperScore);
+      if (u > bestScore) { bestScore = u; bestCategory = cat; }
+    }
+    return { action: 'score', category: bestCategory };
+  }
+  let bestMask = 0, bestEV = -Infinity;
+  if (rollsRemaining === 1) {
+    const allRolls5 = getUniqueRolls(5);
+    const rollUtilities = new Map();
+    for (const r of allRolls5) rollUtilities.set(r.join(','), getMaxCategoryUtility(r, remainingCategories, scorecard, upperScore));
+    for (let mask = 0; mask < 32; mask++) {
+      const ev = calculateMaskEV_1(roll, mask, remainingCategories, scorecard, upperScore, rollUtilities);
+      if (ev > bestEV) { bestEV = ev; bestMask = mask; }
+    }
+    return { action: 'hold', mask: bestMask };
+  }
+  if (rollsRemaining === 2) {
+    const ev1Table = precomputeEV1Table(remainingCategories, scorecard, upperScore);
+    for (let mask = 0; mask < 32; mask++) {
+      const ev = calculateMaskEV_2(roll, mask, ev1Table);
+      if (ev > bestEV) { bestEV = ev; bestMask = mask; }
+    }
+    return { action: 'hold', mask: bestMask };
+  }
+}
+
+function getRemainingCategories(scorecard) {
+  return Object.keys(CATEGORY_EXPECTED_VALUES).filter(cat => scorecard[cat] === null);
+}
+function getCategoryEnglishName(cat) {
+  const c = CATEGORIES.find(x => x.id === cat);
+  return c ? c.name : cat;
+}
+function freshScorecard() {
+  return {
+    ones: null, twos: null, threes: null, fours: null, fives: null, sixes: null,
+    threeOfKind: null, fourOfKind: null, fullHouse: null, smallStraight: null, largeStraight: null,
+    yahtzee: null, chance: null, yahtzeeBonus: 0
+  };
+}
+function isCardComplete(card) {
+  const cats = ['ones','twos','threes','fours','fives','sixes','threeOfKind','fourOfKind','fullHouse','smallStraight','largeStraight','yahtzee','chance'];
+  return cats.every(c => card[c] !== null);
+}
+
+/* ---- component ---- */
+class Component extends DCLogic {
+  state = {
+    view: 'menu',
+    viewKey: 0,
+    theme: 'dark',
+    clock: '',
+    tiltX: 0,
+    tiltY: 0,
+    pressing: false,
+    secretTab: 'chat',
+    messages: [
+      { timestamp: '02.07.2026, 17:18:43', name: 'Milan', text: 'Test hier ist Milan' },
+      { timestamp: '02.07.2026, 17:20:15', name: 'Milan', text: 'Test' }
+    ],
+    yatzy: {
+      mode: 'solo',
+      screen: 'setup', // setup | game
+      activePlayer: 'player',
+      rollsRemaining: 3,
+      dice: [1,2,3,4,5],
+      held: [false,false,false,false,false],
+      rollingIdx: [],
+      isRolling: false,
+      status: 'your turn. roll to start the game.',
+      statusIsBot: false,
+      scorecards: { player: freshScorecard(), bot: freshScorecard() },
+      round: 1,
+      justSettled: false
+    }
+  };
+
+  componentDidMount() {
+    this._tick();
+    this._clockTimer = setInterval(() => this._tick(), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this._clockTimer);
+    clearInterval(this._rollTimer);
+    clearTimeout(this._botTimer);
+    clearTimeout(this._pressTimer);
+  }
+
+  _tick() {
+    const now = new Date();
+    const month = String(now.getMonth()+1).padStart(2,'0');
+    const day = String(now.getDate()).padStart(2,'0');
+    const year = now.getFullYear();
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2,'0');
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12; hours = hours ? hours : 12;
+    const hoursStr = String(hours).padStart(2,'0');
+    let timezone = 'BERLIN';
+    try {
+      const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tzName.includes('Europe/Berlin')) timezone = 'BERLIN';
+      else if (tzName.includes('New_York')) timezone = 'NYC';
+      else if (tzName.includes('London')) timezone = 'LDN';
+      else timezone = tzName.split('/').pop().replace('_',' ').toUpperCase();
+    } catch(e) {}
+    this.setState({ clock: `${month}/${day}/${year} ${hoursStr}:${minutes}${ampm} ${timezone}` });
+  }
+
+  handleLogoMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    this.setState({ tiltX: py * -18, tiltY: px * 22 });
+  };
+  resetTilt = () => this.setState({ tiltX: 0, tiltY: 0 });
+
+  triggerPress = () => {
+    this.setState({ pressing: true });
+    clearTimeout(this._pressTimer);
+    this._pressTimer = setTimeout(() => this.setState({ pressing: false }), 700);
+  };
+
+  goMenu = (e) => { e && e.preventDefault(); this.setState(s => ({ view: 'menu', viewKey: s.viewKey + 1 })); };
+  goAbout = (e) => { e && e.preventDefault(); this.setState(s => ({ view: 'about', viewKey: s.viewKey + 1 })); };
+  goSecret = (e) => { e && e.preventDefault(); this.setState(s => ({ view: 'secret', viewKey: s.viewKey + 1 })); };
+  goChat = () => this.setState({ secretTab: 'chat' });
+  goYatzy = () => this.setState({ secretTab: 'yatzy' });
+  toggleTheme = (e) => { e && e.preventDefault(); this.setState(s => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })); };
+
+  setModeSolo = () => this.setState(s => ({ yatzy: { ...s.yatzy, mode: 'solo' } }));
+  setModeBot = () => this.setState(s => ({ yatzy: { ...s.yatzy, mode: 'bot' } }));
+
+  startGame = () => {
+    this.setState(s => ({
+      yatzy: {
+        ...s.yatzy,
+        screen: 'game',
+        activePlayer: 'player',
+        rollsRemaining: 3,
+        dice: [1,2,3,4,5],
+        held: [false,false,false,false,false],
+        round: 1,
+        isRolling: false,
+        status: 'your turn. roll to start the game.',
+        statusIsBot: false,
+        scorecards: { player: freshScorecard(), bot: freshScorecard() }
+      }
+    }));
+  };
+
+  toggleHold = (idx) => {
+    const y = this.state.yatzy;
+    if (y.activePlayer !== 'player' || y.rollsRemaining === 3 || y.rollsRemaining === 0 || y.isRolling) return;
+    const held = [...y.held];
+    held[idx] = !held[idx];
+    this.setState({ yatzy: { ...y, held } });
+  };
+
+  rollDice = () => {
+    const y = this.state.yatzy;
+    if (y.activePlayer !== 'player' || y.rollsRemaining === 0 || y.isRolling) return;
+    const rolledIndices = [];
+    for (let i = 0; i < 5; i++) if (!y.held[i]) rolledIndices.push(i);
+    if (rolledIndices.length === 0) return;
+    this._animateRoll(rolledIndices, () => {
+      this.setState(s => {
+        const ny = { ...s.yatzy };
+        ny.rollsRemaining -= 1;
+        ny.status = ny.rollsRemaining === 0 ? 'end turn: choose a category on the scorecard.' : 'click on dice to hold or choose a category.';
+        return { yatzy: ny };
+      });
+    });
+  };
+
+  _animateRoll(rolledIndices, onComplete) {
+    this.setState(s => ({ yatzy: { ...s.yatzy, isRolling: true, rollingIdx: rolledIndices } }));
+    this._rollTimer = setInterval(() => {
+      this.setState(s => {
+        const dice = [...s.yatzy.dice];
+        rolledIndices.forEach(i => { dice[i] = Math.floor(Math.random()*6)+1; });
+        return { yatzy: { ...s.yatzy, dice } };
+      });
+    }, 60);
+    setTimeout(() => {
+      clearInterval(this._rollTimer);
+      this.setState(s => {
+        const dice = [...s.yatzy.dice];
+        rolledIndices.forEach(i => { dice[i] = Math.floor(Math.random()*6)+1; });
+        return { yatzy: { ...s.yatzy, dice, isRolling: false, rollingIdx: [], justSettled: true } };
+      });
+      setTimeout(() => this.setState(s => ({ yatzy: { ...s.yatzy, justSettled: false } })), 400);
+      onComplete();
+    }, 750);
+  }
+
+  selectCategory = (catId) => {
+    const y = this.state.yatzy;
+    if (y.activePlayer !== 'player') return;
+    const playerCard = y.scorecards.player;
+    if (playerCard[catId] !== null) return;
+    if (y.rollsRemaining === 3) return;
+
+    const score = getPotentialScore(y.dice, catId, playerCard);
+    const counts = Array(7).fill(0);
+    for (const v of y.dice) counts[v]++;
+    const isYahtzee = counts.includes(5);
+
+    const newPlayerCard = { ...playerCard };
+    if (isYahtzee && newPlayerCard['yahtzee'] === 50) newPlayerCard.yahtzeeBonus += 100;
+    newPlayerCard[catId] = score;
+
+    const scorecards = { ...y.scorecards, player: newPlayerCard };
+
+    if (isCardComplete(newPlayerCard) && (y.mode === 'solo' || isCardComplete(y.scorecards.bot))) {
+      this.setState({ yatzy: { ...y, scorecards, status: 'game over.' } });
+      return;
+    }
+
+    if (y.mode === 'solo') {
+      this.setState({
+        yatzy: { ...y, scorecards, rollsRemaining: 3, held: [false,false,false,false,false],
+          round: y.round + 1, status: 'your turn. roll to start the round.' }
+      });
+    } else {
+      this.setState({ yatzy: { ...y, scorecards, activePlayer: 'bot', rollsRemaining: 3, held: [false,false,false,false,false] } }, () => this._runBotTurn());
+    }
+  };
+
+  _runBotTurn() {
+    this.setState(s => ({ yatzy: { ...s.yatzy, statusIsBot: true, status: 'bot is rolling...' } }));
+    this._botTimer = setTimeout(() => {
+      this._animateRoll([0,1,2,3,4], () => {
+        this.setState(s => ({ yatzy: { ...s.yatzy, rollsRemaining: 2 } }));
+        this._botStep(2);
+      });
+    }, 700);
+  }
+
+  _botStep(rollsRemaining) {
+    const y = this.state.yatzy;
+    const remainingCats = getRemainingCategories(y.scorecards.bot);
+    const decision = getBotDecision(y.dice, rollsRemaining, remainingCats, y.scorecards.bot);
+    const held = [false,false,false,false,false];
+    for (let i = 0; i < 5; i++) held[i] = (decision.mask & (1<<i)) !== 0;
+    this.setState(s => ({ yatzy: { ...s.yatzy, held, statusIsBot: true, status: 'bot is thinking...' } }));
+
+    const rolledIndices = [];
+    for (let i = 0; i < 5; i++) if (!held[i]) rolledIndices.push(i);
+
+    this._botTimer = setTimeout(() => {
+      if (rolledIndices.length === 0) {
+        this._botFinish(rollsRemaining - 1);
+        return;
+      }
+      this.setState(s => ({ yatzy: { ...s.yatzy, status: 'bot is rolling...' } }));
+      this._animateRoll(rolledIndices, () => {
+        this.setState(s => ({ yatzy: { ...s.yatzy, rollsRemaining: rollsRemaining - 1 } }));
+        if (rollsRemaining - 1 > 0) {
+          this._botStep(rollsRemaining - 1);
+        } else {
+          this._botFinish(0);
+        }
+      });
+    }, 900);
+  }
+
+  _botFinish(rollsRemaining) {
+    this._botTimer = setTimeout(() => {
+      const y = this.state.yatzy;
+      const remainingCats = getRemainingCategories(y.scorecards.bot);
+      const decision = getBotDecision(y.dice, 0, remainingCats, y.scorecards.bot);
+      const cat = decision.category;
+      const score = getPotentialScore(y.dice, cat, y.scorecards.bot);
+      const counts = Array(7).fill(0);
+      for (const v of y.dice) counts[v]++;
+      const isYahtzee = counts.includes(5);
+      const botCard = { ...y.scorecards.bot };
+      if (isYahtzee && botCard['yahtzee'] === 50) botCard.yahtzeeBonus += 100;
+      botCard[cat] = score;
+      const scorecards = { ...y.scorecards, bot: botCard };
+      this.setState({ yatzy: { ...y, scorecards, status: `bot chooses ${getCategoryEnglishName(cat)} for ${score} points.` } });
+
+      this._botTimer = setTimeout(() => {
+        const s2 = this.state.yatzy;
+        if (isCardComplete(s2.scorecards.bot) && isCardComplete(s2.scorecards.player)) {
+          this.setState({ yatzy: { ...s2, status: 'game over.' } });
+        } else {
+          this.setState({
+            yatzy: { ...s2, activePlayer: 'player', rollsRemaining: 3, held: [false,false,false,false,false],
+              round: s2.round + 1, statusIsBot: false, status: 'your turn. roll to start the round.' }
+          });
+        }
+      }, 1400);
+    }, 300);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const dark = s.theme === 'dark';
+    const colors = {
+      bg: dark ? '#000000' : '#ffffff',
+      text: dark ? '#ffffff' : '#000000',
+      accent: '#ee2d24'
+    };
+
+    const y = s.yatzy;
+    const isBotMode = y.mode === 'bot';
+
+    const diceList = y.dice.map((val, i) => {
+      const held = y.held[i];
+      const rolling = y.rollingIdx.includes(i);
+      return {
+        value: rolling ? val : val,
+        borderColor: held ? colors.accent : (dark ? '#444' : '#bbb'),
+        color: held ? colors.accent : colors.text,
+        transform: held ? 'translateY(-6px) rotateY(8deg)' : 'translateY(0) rotateY(0deg)',
+        animation: rolling ? 'diceSpin 0.25s linear infinite' : (y.justSettled ? 'diceSettle 0.4s ease' : 'none'),
+        onClick: () => this.toggleHold(i)
+      };
+    });
+
+    const playerCard = y.scorecards.player;
+    const botCard = y.scorecards.bot;
+    const pUpperSum = getUpperSum(playerCard), pUpperBonus = getUpperBonus(playerCard);
+    const bUpperSum = getUpperSum(botCard), bUpperBonus = getUpperBonus(botCard);
+    const canPick = y.activePlayer === 'player' && y.rollsRemaining < 3 && !y.isRolling;
+
+    const scoreRows = CATEGORIES.map(cat => {
+      let playerScore, playerColor = colors.text, playerCursor = 'default', onClickPlayer = null;
+      if (cat.calc) {
+        if (cat.id === 'upperSubtotal') playerScore = pUpperSum;
+        else if (cat.id === 'upperBonus') playerScore = pUpperBonus;
+        else if (cat.id === 'yahtzeeBonus') playerScore = playerCard.yahtzeeBonus;
+        else playerScore = getTotalScore(playerCard);
+      } else {
+        const p = playerCard[cat.id];
+        if (p !== null) { playerScore = p; }
+        else if (canPick) {
+          playerScore = getPotentialScore(y.dice, cat.id, playerCard);
+          playerColor = '#888'; playerCursor = 'pointer';
+          onClickPlayer = () => this.selectCategory(cat.id);
+        } else { playerScore = '-'; playerColor = '#888'; }
+      }
+      let botScore = '-';
+      if (isBotMode) {
+        if (cat.id === 'upperSubtotal') botScore = bUpperSum;
+        else if (cat.id === 'upperBonus') botScore = bUpperBonus;
+        else if (cat.id === 'yahtzeeBonus') botScore = botCard.yahtzeeBonus;
+        else if (cat.id === 'totalScore') botScore = getTotalScore(botCard);
+        else if (botCard[cat.id] !== null) botScore = botCard[cat.id];
+      }
+      return {
+        name: cat.name,
+        playerScore, playerColor, playerCursor, onClickPlayer, botScore,
+        nameWeight: cat.section === 'meta' ? '700' : '400',
+        nameStyle: cat.id === 'upperSubtotal' ? 'italic' : 'normal',
+        borderTop: cat.id === 'totalScore' ? `2px solid ${colors.text}` : `1px solid ${colors.text}`,
+        borderBottom: cat.id === 'upperSubtotal' ? `2px solid ${colors.text}` : `1px solid ${colors.text}`,
+        rowBg: cat.section === 'meta' ? 'rgba(128,128,128,0.12)' : 'transparent'
+      };
+    });
+
+    return {
+      colors,
+      themeLabel: dark ? 'light' : 'dark',
+      clock: s.clock,
+      logoTransform: `rotateX(${s.tiltX}deg) rotateY(${s.tiltY}deg)`,
+      logoAnimation: s.pressing ? 'logoPress 0.7s cubic-bezier(.22,.9,.25,1)' : 'floatLogo 4.5s ease-in-out infinite',
+      triggerPress: this.triggerPress,
+      isMenu: s.view === 'menu',
+      isAbout: s.view === 'about',
+      isSecret: s.view === 'secret',
+      viewKey: s.viewKey,
+      handleLogoMove: this.handleLogoMove,
+      resetTilt: this.resetTilt,
+      goMenu: this.goMenu, goAbout: this.goAbout, goSecret: this.goSecret,
+      toggleTheme: this.toggleTheme,
+      goChat: this.goChat, goYatzy: this.goYatzy,
+      isChatTab: s.secretTab === 'chat',
+      isYatzyTab: s.secretTab === 'yatzy',
+      chatUnderline: s.secretTab === 'chat' ? 'underline' : 'none',
+      yatzyUnderline: s.secretTab === 'yatzy' ? 'underline' : 'none',
+      messages: s.messages,
+      yatzyShowSetup: y.screen === 'setup',
+      yatzyShowGame: y.screen === 'game',
+      setModeSolo: this.setModeSolo, setModeBot: this.setModeBot,
+      soloBg: y.mode === 'solo' ? colors.text : 'transparent',
+      soloColor: y.mode === 'solo' ? colors.bg : colors.text,
+      botBg: y.mode === 'bot' ? colors.text : 'transparent',
+      botColor: y.mode === 'bot' ? colors.bg : colors.text,
+      startGame: this.startGame,
+      isBotMode,
+      yatzyStatus: y.status,
+      statusColor: y.statusIsBot ? colors.accent : colors.text,
+      diceList,
+      rollDice: this.rollDice,
+      rollDisabled: y.rollsRemaining === 0 || y.isRolling || y.activePlayer !== 'player',
+      rollOpacity: (y.rollsRemaining === 0 || y.activePlayer !== 'player') ? 0.5 : 1,
+      rollLabel: y.activePlayer === 'player' ? `roll (${y.rollsRemaining} left)` : 'bot is playing...',
+      scoreRows
+    };
+  }
+}
+
+</script>
 </body>
 </html>
