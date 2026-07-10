@@ -201,10 +201,26 @@
           
           <!-- View 1: Sticker Set Selection -->
           <sc-if value="{{ stickersShowSetSelect }}" hint-placeholder-val="{{ true }}">
-            <div style="display:flex; justify-content:center; margin:20px 0;">
-              <div onClick="{{ goTartanGrid }}" style="width:280px; padding:24px; border:1px solid {{ colors.text }}15; border-radius:8px; background:rgba(128,128,128,0.03); box-shadow:0 12px 30px rgba(0,0,0,0.15); cursor:pointer; text-align:center; transition:transform 0.2s ease, border-color 0.2s ease;" style-hover="transform:translateY(-4px); border-color:{{ colors.accent }};">
-                <div style="font-weight:700; font-size:15px; margin-bottom:8px; text-transform:lowercase; color:{{ colors.accent }};">tartan sticker set</div>
-                <div style="font-size:11px; opacity:0.75; line-height:1.5; text-transform:lowercase;">10 virtual tartan pattern stickers styled in premium color schemes. click to open.</div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin:20px 0;">
+              <!-- Tartan Card -->
+              <div onClick="{{ goTartanGrid }}" style="width:280px; padding:20px; border:1px solid {{ colors.text }}15; border-radius:8px; background:rgba(128,128,128,0.03); box-shadow:0 8px 20px rgba(0,0,0,0.1); cursor:pointer; text-align:center; transition:transform 0.2s ease, border-color 0.2s ease;" style-hover="transform:translateY(-3px); border-color:{{ colors.accent }};">
+                <div style="font-weight:700; font-size:14px; margin-bottom:6px; text-transform:lowercase; color:{{ colors.accent }};">tartan set</div>
+                <div style="font-size:11px; opacity:0.75; line-height:1.4; text-transform:lowercase;">10 virtual tartan pattern stickers.</div>
+              </div>
+              <!-- Classic Card -->
+              <div onClick="{{ goClassicGrid }}" style="width:280px; padding:20px; border:1px solid {{ colors.text }}15; border-radius:8px; background:rgba(128,128,128,0.03); box-shadow:0 8px 20px rgba(0,0,0,0.1); cursor:pointer; text-align:center; transition:transform 0.2s ease, border-color 0.2s ease;" style-hover="transform:translateY(-3px); border-color:{{ colors.accent }};">
+                <div style="font-weight:700; font-size:14px; margin-bottom:6px; text-transform:lowercase; color:{{ colors.accent }};">classic set</div>
+                <div style="font-size:11px; opacity:0.75; line-height:1.4; text-transform:lowercase;">10 classic solid color stickers.</div>
+              </div>
+              <!-- White Card -->
+              <div onClick="{{ goWhiteGrid }}" style="width:280px; padding:20px; border:1px solid {{ colors.text }}15; border-radius:8px; background:rgba(128,128,128,0.03); box-shadow:0 8px 20px rgba(0,0,0,0.1); cursor:pointer; text-align:center; transition:transform 0.2s ease, border-color 0.2s ease;" style-hover="transform:translateY(-3px); border-color:{{ colors.accent }};">
+                <div style="font-weight:700; font-size:14px; margin-bottom:6px; text-transform:lowercase; color:{{ colors.accent }};">white set</div>
+                <div style="font-size:11px; opacity:0.75; line-height:1.4; text-transform:lowercase;">4 embossed, extruded, glossy, and chrome stickers.</div>
+              </div>
+              <!-- Balloon Card -->
+              <div onClick="{{ goBalloonGrid }}" style="width:280px; padding:20px; border:1px solid {{ colors.text }}15; border-radius:8px; background:rgba(128,128,128,0.03); box-shadow:0 8px 20px rgba(0,0,0,0.1); cursor:pointer; text-align:center; transition:transform 0.2s ease, border-color 0.2s ease;" style-hover="transform:translateY(-3px); border-color:{{ colors.accent }};">
+                <div style="font-weight:700; font-size:14px; margin-bottom:6px; text-transform:lowercase; color:{{ colors.accent }};">balloon set</div>
+                <div style="font-size:11px; opacity:0.75; line-height:1.4; text-transform:lowercase;">6 shiny inflated balloon stickers.</div>
               </div>
             </div>
             
@@ -240,6 +256,71 @@
                           <div style="position: absolute; left: 0; width: 100%; text-align: center; top: 5.7px; font-family: 'Arial Black', Helvetica, Arial, sans-serif; font-weight: 900; font-style: italic; color: #fdfdfc; font-size: 35.5px; line-height: 1; letter-spacing: 0.9px; white-space: nowrap; filter: drop-shadow(0 0.5px 1px rgba(0,0,0,0.4)); height: 40px">Milxn</div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              
+              <div style="margin-top:20px;">
+                <a href="#stickers" onClick="{{ goStickersSetSelect }}" style="font-size:12px; font-weight:700; text-transform:lowercase; opacity:0.8; display:inline-block;">&lt; back</a>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- View 3: Classic Sticker Grid -->
+          <sc-if value="{{ stickersShowClassicGrid }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:400px; margin:0 auto 24px auto;">
+                <sc-for list="{{ classicStickers }}" as="st" hint-placeholder-count="10">
+                  <div style="display:flex; flex-direction:column; align-items:center; animation:fadeUp 0.4s ease both;">
+                    <div onClick="{{ st.onStickerClick }}"
+                         style="width:160px; height:57px; background:{{ colors.bg }}; border:1px solid {{ colors.text }}15; border-radius:4px; display:flex; align-items:center; justify-content:center; box-sizing:border-box; box-shadow:0 8px 24px rgba(0,0,0,0.12); cursor:pointer; transition:transform 0.25s ease, box-shadow 0.25s ease;"
+                         style-hover="transform:translateY(-4px) scale(1.03) rotate(0.5deg); box-shadow:0 12px 24px rgba(0,0,0,0.25), 0 0 12px {{ colors.accent }}20; border-color:{{ colors.accent }}50;">
+                      <div style="background:{{ st.bg }}; border-radius:6px; padding:6px 14px; display:inline-block; border:1px solid rgba(0,0,0,0.05); min-width:80px; text-align:center;">
+                        <span style="color:{{ st.text }}; font-family:'Archivo Black', 'Arial Black', sans-serif; font-size:16px; font-weight:900; font-style:italic; letter-spacing:-0.02em; line-height:1; text-transform:lowercase; display:inline-block;">milxn</span>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              
+              <div style="margin-top:20px;">
+                <a href="#stickers" onClick="{{ goStickersSetSelect }}" style="font-size:12px; font-weight:700; text-transform:lowercase; opacity:0.8; display:inline-block;">&lt; back</a>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- View 4: White Sticker Grid -->
+          <sc-if value="{{ stickersShowWhiteGrid }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:400px; margin:0 auto 24px auto;">
+                <sc-for list="{{ whiteStickers }}" as="st" hint-placeholder-count="4">
+                  <div style="display:flex; flex-direction:column; align-items:center; animation:fadeUp 0.4s ease both;">
+                    <div onClick="{{ st.onStickerClick }}"
+                         style="width:160px; height:57px; border-radius:4px; overflow:hidden; position:relative; border:1px solid {{ colors.text }}15; background:#141414; box-shadow:0 8px 24px rgba(0,0,0,0.12); transition:transform 0.25s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.25s cubic-bezier(0.2,0.8,0.2,1); cursor:pointer;"
+                         style-hover="transform:translateY(-4px) scale(1.03) rotate(0.5deg); box-shadow:0 12px 24px rgba(0,0,0,0.25), 0 0 12px {{ colors.accent }}20; border-color:{{ colors.accent }}50;">
+                      <iframe src="{{ st.src }}" style="position:absolute; width:700px; height:250px; left:50%; top:50%; transform:translate(-50%, -50%) scale(0.228); transform-origin:center; border:none; pointer-events:none; overflow:hidden;"></iframe>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              
+              <div style="margin-top:20px;">
+                <a href="#stickers" onClick="{{ goStickersSetSelect }}" style="font-size:12px; font-weight:700; text-transform:lowercase; opacity:0.8; display:inline-block;">&lt; back</a>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- View 5: Balloon Sticker Grid -->
+          <sc-if value="{{ stickersShowBalloonGrid }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:400px; margin:0 auto 24px auto;">
+                <sc-for list="{{ balloonStickers }}" as="st" hint-placeholder-count="6">
+                  <div style="display:flex; flex-direction:column; align-items:center; animation:fadeUp 0.4s ease both;">
+                    <div onClick="{{ st.onStickerClick }}"
+                         style="width:160px; height:57px; border-radius:4px; overflow:hidden; position:relative; border:1px solid {{ colors.text }}15; background:#141414; box-shadow:0 8px 24px rgba(0,0,0,0.12); transition:transform 0.25s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.25s cubic-bezier(0.2,0.8,0.2,1); cursor:pointer;"
+                         style-hover="transform:translateY(-4px) scale(1.03) rotate(0.5deg); box-shadow:0 12px 24px rgba(0,0,0,0.25), 0 0 12px {{ colors.accent }}20; border-color:{{ colors.accent }}50;">
+                      <iframe src="{{ st.src }}" style="position:absolute; width:700px; height:250px; left:50%; top:50%; transform:translate(-50%, -50%) scale(0.228); transform-origin:center; border:none; pointer-events:none; overflow:hidden;"></iframe>
                     </div>
                   </div>
                 </sc-for>
@@ -784,7 +865,9 @@ class Component extends DCLogic {
   
   goStickersSetSelect = (e) => { e && e.preventDefault(); this.setState({ stickersView: 'setSelect' }); };
   goTartanGrid = () => this.setState({ stickersView: 'tartanGrid' });
-  closeSticker = () => this.setState({ activeSticker: null });
+  goClassicGrid = () => this.setState({ stickersView: 'classicGrid' });
+  goWhiteGrid = () => this.setState({ stickersView: 'whiteGrid' });
+  goBalloonGrid = () => this.setState({ stickersView: 'balloonGrid' });
   
   toggleTheme = (e) => { e && e.preventDefault(); this.setState(s => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })); };
 
@@ -1026,6 +1109,45 @@ class Component extends DCLogic {
       };
     });
 
+
+    const classicStickers = [
+      { bg: '#e8221f', text: '#ffffff', logoIdx: 0 },
+      { bg: '#0a0a0a', text: '#ffffff', logoIdx: 9 },
+      { bg: '#1560f0', text: '#ffffff', logoIdx: 1 },
+      { bg: '#12a150', text: '#ffffff', logoIdx: 2 },
+      { bg: '#f5b301', text: '#ffffff', logoIdx: 6 },
+      { bg: '#8b2fd6', text: '#ffffff', logoIdx: 3 },
+      { bg: '#ff6a00', text: '#ffffff', logoIdx: 4 },
+      { bg: '#e91e8c', text: '#ffffff', logoIdx: 7 },
+      { bg: '#00b3b3', text: '#ffffff', logoIdx: 5 },
+      { bg: '#f4f4f4', text: '#0a0a0a', logoIdx: 8 }
+    ].map((item) => ({
+      ...item,
+      onStickerClick: () => this.setState({ logoVariantIndex: item.logoIdx })
+    }));
+
+    const whiteStickers = [
+      { file: '01%20embossed.dc.html', logoIdx: 8 },
+      { file: '02%20extruded.dc.html', logoIdx: 9 },
+      { file: '03%20glossy%20puff.dc.html', logoIdx: 1 },
+      { file: '04%20beveled%20chrome.dc.html', logoIdx: 5 }
+    ].map(item => ({
+      src: `stickers/white/${item.file}`,
+      onStickerClick: () => this.setState({ logoVariantIndex: item.logoIdx })
+    }));
+
+    const balloonStickers = [
+      { file: '1%20pink.dc.html', logoIdx: 7 },
+      { file: '2%20orange.dc.html', logoIdx: 4 },
+      { file: '3%20green.dc.html', logoIdx: 2 },
+      { file: '4%20blue.dc.html', logoIdx: 1 },
+      { file: '5%20purple.dc.html', logoIdx: 3 },
+      { file: '6%20red.dc.html', logoIdx: 0 }
+    ].map(item => ({
+      src: `stickers/balloon/${item.file}`,
+      onStickerClick: () => this.setState({ logoVariantIndex: item.logoIdx })
+    }));
+
     const tartanStickers = TARTAN_PALETTES.map((palette, i) => ({
       cells: generateTartanCells(palette),
       onStickerClick: () => this.setState({ logoVariantIndex: i })
@@ -1045,7 +1167,13 @@ class Component extends DCLogic {
       
       stickersShowSetSelect: s.stickersView === 'setSelect',
       stickersShowTartanGrid: s.stickersView === 'tartanGrid',
+      stickersShowClassicGrid: s.stickersView === 'classicGrid',
+      stickersShowWhiteGrid: s.stickersView === 'whiteGrid',
+      stickersShowBalloonGrid: s.stickersView === 'balloonGrid',
       tartanStickers,
+      classicStickers,
+      whiteStickers,
+      balloonStickers,
       
       viewKey: s.viewKey,
       handleLogoMove: this.handleLogoMove,
