@@ -53,8 +53,7 @@
         <div
           onMouseMove="{{ handleLogoMove }}"
           onMouseLeave="{{ resetTilt }}"
-          onClick="{{ triggerPress }}"
-          style="width:210px; height:75px; position:relative; cursor:pointer; user-select:none; margin-bottom:14px; animation:{{ logoAnimation }}; transform-style:preserve-3d; perspective:600px; transform:{{ logoTransform }}; transition:transform 0.15s ease-out;">
+          style="width:210px; height:75px; position:relative; user-select:none; margin-bottom:14px; animation:floatLogo 4.5s ease-in-out infinite; transform-style:preserve-3d; perspective:600px; transform:{{ logoTransform }}; transition:transform 0.15s ease-out;">
           <div style="width:702px; height:250px; transform:scale(0.2991); transform-origin:top left; background:#f4f3f0; border-radius:6px; padding:13px; box-sizing:border-box; box-shadow:0 24px 50px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.4);">
             <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:2px;">
               <div style="position:absolute; inset:0; display:grid; grid-template-columns:repeat(27,1fr); grid-template-rows:repeat(9,1fr); background:{{ colors.logoDark }};">
@@ -221,11 +220,27 @@
                 <sc-for list="{{ tartanStickers }}" as="st" hint-placeholder-count="10">
                   <div style="display:flex; flex-direction:column; align-items:center; animation:fadeUp 0.4s ease both;">
                     <div onClick="{{ st.onStickerClick }}"
-                         style="width:160px; height:57px; border-radius:4px; overflow:hidden; position:relative; border:1px solid {{ colors.text }}15; background:#ffffff; box-shadow:0 8px 24px rgba(0,0,0,0.12); transition:transform 0.25s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.25s cubic-bezier(0.2,0.8,0.2,1); cursor:pointer;"
+                         style="width:160px; height:57px; background:#f4f3f0; border-radius:4px; padding:3px; box-sizing:border-box; box-shadow:0 8px 24px rgba(0,0,0,0.12); position:relative; overflow:hidden; transition:transform 0.25s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.25s cubic-bezier(0.2,0.8,0.2,1); cursor:pointer;"
                          style-hover="transform:translateY(-4px) scale(1.03) rotate(0.5deg); box-shadow:0 12px 24px rgba(0,0,0,0.25), 0 0 12px {{ colors.accent }}20; border-color:{{ colors.accent }}50;">
-                      <iframe src="{{ st.src }}" style="position:absolute; width:702px; height:250px; left:50%; top:50%; transform:translate(-50%, -50%) scale(0.228); transform-origin:center; border:none; pointer-events:none; overflow:hidden; background:#fff;"></iframe>
+                      <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:2px;">
+                        <!-- Tartan Grid -->
+                        <div style="position:absolute; inset:0; display:grid; grid-template-columns:repeat(27,1fr); grid-template-rows:repeat(9,1fr); background:#000;">
+                          <sc-for list="{{ st.cells }}" as="color">
+                            <div style="background:{{ color }}; box-shadow:0 0 1.2px {{ color }};"></div>
+                          </sc-for>
+                        </div>
+                        <!-- Vignette Overlay -->
+                        <div style="position:absolute; inset:0; pointer-events:none; background-image:
+                          repeating-linear-gradient(45deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px),
+                          repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 1px, transparent 1px, transparent 3px),
+                          radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.18) 100%);
+                          mix-blend-mode:soft-light;"></div>
+                        <!-- Logo Text -->
+                        <div style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 40%, transparent 60%, rgba(0,0,0,0.20) 100%);">
+                          <div style="position: absolute; left: 0; width: 100%; text-align: center; top: 5.7px; font-family: 'Arial Black', Helvetica, Arial, sans-serif; font-weight: 900; font-style: italic; color: #fdfdfc; font-size: 35.5px; line-height: 1; letter-spacing: 0.9px; white-space: nowrap; filter: drop-shadow(0 0.5px 1px rgba(0,0,0,0.4)); height: 40px">Milxn</div>
+                        </div>
+                      </div>
                     </div>
-                    <div style="font-size:11px; margin-top:8px; opacity:0.8; font-weight:700; text-transform:lowercase; letter-spacing:-0.2px; text-align:center;">{{ st.name }}</div>
                   </div>
                 </sc-for>
               </div>
@@ -260,24 +275,7 @@
   </div>
 </div>
 
-<!-- STICKER DETAIL MODAL -->
-<sc-if value="{{ activeSticker }}" hint-placeholder-val="{{ false }}">
-  <div style="position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); animation:fadeUp 0.3s ease both; padding:20px; box-sizing:border-box;">
-    <div style="position:absolute; inset:0; cursor:pointer;" onClick="{{ closeSticker }}"></div>
-    
-    <div style="position:relative; width:100%; max-width:742px; background:#141414; border:1px solid #333; border-radius:8px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.8); animation:panelFlipIn 0.4s cubic-bezier(.2,.8,.2,1) both;">
-      <!-- Modal Header -->
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 20px; border-bottom:1px solid #222; color:#fff; font-size:13px; font-weight:700; text-transform:lowercase; user-select:none;">
-        <span>{{ activeStickerName }}</span>
-        <span onClick="{{ closeSticker }}" style="cursor:pointer; opacity:0.8; padding:4px 8px; border:1px solid #333; border-radius:4px; background:#1e1e1e; font-size:11px; transition:all 0.2s;" style-hover="opacity:1; border-color:{{ colors.accent }}; color:{{ colors.accent }};">close</span>
-      </div>
-      <!-- Modal Body (Iframe) -->
-      <div style="width:100%; height:290px; background:#e7e4dd; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:20px;">
-        <iframe src="{{ activeStickerSrc }}" style="width:702px; height:250px; border:none; display:block; background:#fff; box-shadow:0 8px 30px rgba(0,0,0,0.25); border-radius:4px;"></iframe>
-      </div>
-    </div>
-  </div>
-</sc-if>
+
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
@@ -650,14 +648,12 @@ class Component extends DCLogic {
     tiltX: 0,
     tiltY: 0,
     pressing: false,
-    logoPressing: false,
     logoVariantIndex: 0,
     youtubeUrl: 'https://www.youtube.com/watch?v=7wIwJvyZPv0',
     extraUrl: '',
     messages: [],
     
     stickersView: 'setSelect',
-    activeSticker: null,
     
     yatzy: {
       mode: 'solo',
@@ -779,21 +775,7 @@ class Component extends DCLogic {
   };
   resetTilt = () => this.setState({ tiltX: 0, tiltY: 0 });
 
-  triggerPress = () => {
-    if (this.state.logoPressing) return;
-    this.setState({ logoPressing: true });
-    clearTimeout(this._pressTimer);
-    
-    setTimeout(() => {
-      this.setState(s => ({
-        logoVariantIndex: (s.logoVariantIndex + 1) % TARTAN_PALETTES.length
-      }));
-    }, 300);
 
-    this._pressTimer = setTimeout(() => {
-      this.setState({ logoPressing: false });
-    }, 700);
-  };
 
   goMenu = (e) => { e && e.preventDefault(); this.setState(s => ({ view: 'menu', viewKey: s.viewKey + 1 })); };
   goYatzy = (e) => { e && e.preventDefault(); this.setState(s => ({ view: 'yatzy', viewKey: s.viewKey + 1 })); };
@@ -1044,20 +1026,9 @@ class Component extends DCLogic {
       };
     });
 
-    const tartanStickers = [
-      { name: 'Red Tartan', fileId: 'red', src: 'stickers/tartan/01-red.dc.html' },
-      { name: 'Blue Tartan', fileId: 'blue', src: 'stickers/tartan/02-blue.dc.html' },
-      { name: 'Green Tartan', fileId: 'green', src: 'stickers/tartan/03-green.dc.html' },
-      { name: 'Purple Tartan', fileId: 'purple', src: 'stickers/tartan/04-purple.dc.html' },
-      { name: 'Orange Tartan', fileId: 'orange', src: 'stickers/tartan/05-orange.dc.html' },
-      { name: 'Teal Tartan', fileId: 'teal', src: 'stickers/tartan/06-teal.dc.html' },
-      { name: 'Mustard Tartan', fileId: 'mustard', src: 'stickers/tartan/07-mustard.dc.html' },
-      { name: 'Pink Tartan', fileId: 'pink', src: 'stickers/tartan/08-pink.dc.html' },
-      { name: 'Navy Tartan', fileId: 'navy', src: 'stickers/tartan/09-navy.dc.html' },
-      { name: 'Brown Tartan', fileId: 'brown', src: 'stickers/tartan/10-brown.dc.html' }
-    ].map(item => ({
-      ...item,
-      onStickerClick: () => this.setState({ activeSticker: item.fileId })
+    const tartanStickers = TARTAN_PALETTES.map((palette, i) => ({
+      cells: generateTartanCells(palette),
+      onStickerClick: () => this.setState({ logoVariantIndex: i })
     }));
 
     return {
@@ -1065,9 +1036,7 @@ class Component extends DCLogic {
       themeLabel: dark ? 'light' : 'dark',
       clock: s.clock,
       logoCells: generateTartanCells(currentPalette),
-      logoTransform: s.logoPressing ? 'rotateX(0deg) rotateY(0deg)' : `rotateX(${s.tiltX}deg) rotateY(${s.tiltY}deg)`,
-      logoAnimation: s.logoPressing ? 'logoPress3D 0.7s cubic-bezier(.22,.8,.25,1)' : 'floatLogo 4.5s ease-in-out infinite',
-      triggerPress: this.triggerPress,
+      logoTransform: `rotateX(${s.tiltX}deg) rotateY(${s.tiltY}deg)`,
       
       isMenu: s.view === 'menu',
       isYatzy: s.view === 'yatzy',
@@ -1077,32 +1046,6 @@ class Component extends DCLogic {
       stickersShowSetSelect: s.stickersView === 'setSelect',
       stickersShowTartanGrid: s.stickersView === 'tartanGrid',
       tartanStickers,
-      activeSticker: s.activeSticker,
-      activeStickerName: s.activeSticker ? {
-        red: 'Red Tartan Sticker',
-        blue: 'Blue Tartan Sticker',
-        green: 'Green Tartan Sticker',
-        purple: 'Purple Tartan Sticker',
-        orange: 'Orange Tartan Sticker',
-        teal: 'Teal Tartan Sticker',
-        mustard: 'Mustard Tartan Sticker',
-        pink: 'Pink Tartan Sticker',
-        navy: 'Navy Tartan Sticker',
-        brown: 'Brown Tartan Sticker'
-      }[s.activeSticker] : '',
-      activeStickerSrc: s.activeSticker ? {
-        red: 'stickers/tartan/01-red.dc.html',
-        blue: 'stickers/tartan/02-blue.dc.html',
-        green: 'stickers/tartan/03-green.dc.html',
-        purple: 'stickers/tartan/04-purple.dc.html',
-        orange: 'stickers/tartan/05-orange.dc.html',
-        teal: 'stickers/tartan/06-teal.dc.html',
-        mustard: 'stickers/tartan/07-mustard.dc.html',
-        pink: 'stickers/tartan/08-pink.dc.html',
-        navy: 'stickers/tartan/09-navy.dc.html',
-        brown: 'stickers/tartan/10-brown.dc.html'
-      }[s.activeSticker] : '',
-      closeSticker: this.closeSticker,
       
       viewKey: s.viewKey,
       handleLogoMove: this.handleLogoMove,
