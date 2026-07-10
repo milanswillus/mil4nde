@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @font-face { font-family: 'Arial Black'; src: local('Arial Black'); }
+    body { margin: 0; }
+  </style>
+</helmet>
+<div style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at 50% 30%, #2b2b2b 0%, #141414 70%, #0a0a0a 100%); box-sizing: border-box; position: absolute; left: 48px; top: -4px">
+  <div style="width:702px;height:250px;background:#f4f3f0;border-radius:6px;padding:13px;box-shadow:0 24px 50px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.4);">
+    <div style="width:100%;height:100%;position:relative;overflow:hidden;border-radius:2px;">
+      <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(27,1fr);grid-template-rows:repeat(9,1fr);">
+        <sc-for list="{{ cells }}" as="c" hint-placeholder-count="243">
+          <div style="background:{{ c }};"></div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;inset:0;pointer-events:none;background-image:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 1px, transparent 1px, transparent 3px),
+        radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.18) 100%);
+        mix-blend-mode:soft-light;"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%, transparent 60%, rgba(0,0,0,0.20) 100%);"><div style="position: absolute; left: 0; width: 100%; text-align: center; top: 25px; font-family: 'Arial Black', Helvetica, Arial, sans-serif; font-weight: 900; font-style: italic; color: #fdfdfc; font-size: 156px; line-height: 1; letter-spacing: 4px; white-space: nowrap; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4)); height: 174px">Milxn</div></div>
+      
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const palette = this.props.palette || {
+      1: '#17b3a6', // light
+      2: '#0f4a45', // dark
+      3: '#0B0A09', // black
+      4: '#8fccc5', // salmon
+      5: '#B9A087', // beige
+      6: '#695C52', // olive / dark beige
+    };
+    const A = [2,2,3,6,3];
+    const B = [1,1,2,4,2];
+    const C = [4,4,6,5,6];
+    const rep = a => Array.from({length:27}, (_,i) => a[i % a.length]);
+    const rows = [A,B,B,A,C,A,B,B,A].map(rep);
+    const cells = [];
+    for (const row of rows) for (const n of row) cells.push(palette[n]);
+    return { cells };
+  }
+}
+</script>
+</body>
+</html>
